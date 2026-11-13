@@ -153,3 +153,4 @@ OmniScribe is pre-configured with `vercel.json` for zero-configuration, instant 
 ## 📄 License
 
 This project is licensed under the [Apache License, Version 2.0](LICENSE).
+

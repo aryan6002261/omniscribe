@@ -103,3 +103,4 @@ export function saveUserSettings(settings) {
     return false;
   }
 }
+

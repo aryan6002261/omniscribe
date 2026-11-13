@@ -730,3 +730,4 @@ window.addEventListener("DOMContentLoaded", () => {
   app.init();
   window.OmniScribe = app; // Expose globally for interactive debugging
 });
+

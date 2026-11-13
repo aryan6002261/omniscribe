@@ -130,3 +130,4 @@ c. User data leaves the client device, raising regulatory hurdles in healthcare 
 - Layer 5 (State Persistence): Cloud Firestore stores sanitized metadata, sync records, and benchmark telemetry.`
   }
 };
+

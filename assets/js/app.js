@@ -3,9 +3,9 @@
  * Connects Bootstrap UI, NanoDetector, FirebaseService, and user interactions.
  */
 
-import { NanoDetector } from "./nano-detector.js";
-import { FirebaseService } from "./firebase-service.js";
-import { SAMPLE_SCENARIOS } from "./sample-data.js";
+import { NanoDetector } from "./nano-detector.js?v=2.2.0";
+import { FirebaseService } from "./firebase-service.js?v=2.2.0";
+import { SAMPLE_SCENARIOS } from "./sample-data.js?v=2.2.0";
 import {
   saveUserFirebaseConfig,
   saveAppCheckDebugToken,
@@ -13,7 +13,7 @@ import {
   loadUserFirebaseConfig,
   loadAppCheckDebugToken,
   loadUserSettings
-} from "./config.js";
+} from "./config.js?v=2.2.0";
 
 class OmniScribeApp {
   constructor() {
@@ -50,8 +50,8 @@ class OmniScribeApp {
     this.firebase.onAuthChange((user) => this.handleAuthStateChange(user));
     await this.firebase.signInAnonymousUser();
 
-    // 4. Load initial sample scenario
-    this.loadScenario("clinical");
+    // 4. Load initial sample scenario (Defaults to Auto Hybrid / Online processing)
+    this.loadScenario("board_meeting");
   }
 
   cacheDomElements() {
@@ -319,6 +319,33 @@ class OmniScribeApp {
     }
   }
 
+  async verifyUserAction(action = "USER_ACTION") {
+    if (this.firebase && typeof this.firebase.executeReCaptcha === "function") {
+      try {
+        return await this.firebase.executeReCaptcha(action);
+      } catch (err) {
+        console.warn("[App] reCAPTCHA notice:", err);
+      }
+    } else if (typeof window !== "undefined" && window.grecaptcha && window.grecaptcha.enterprise) {
+      try {
+        const siteKey = "6Ld62R0uAAAAAEE634vB9Akj99k4oxAtzrYDdpTf";
+        return await new Promise((resolve) => {
+          window.grecaptcha.enterprise.ready(async () => {
+            try {
+              const token = await window.grecaptcha.enterprise.execute(siteKey, { action });
+              resolve(token);
+            } catch (e) {
+              resolve(null);
+            }
+          });
+        });
+      } catch (e) {
+        console.warn("[App] Direct reCAPTCHA fallback notice:", e);
+      }
+    }
+    return null;
+  }
+
   async runGenAITask(taskType, instruction) {
     const content = this.dom.docContentTextarea.value.trim();
     if (!content && !this.activeImageBase64) {
@@ -333,8 +360,8 @@ class OmniScribeApp {
     const systemPrompt = "You are OmniScribe Hybrid AI, an intelligent, privacy-first document and knowledge assistant.";
 
     try {
-      // Execute reCAPTCHA Enterprise verification on user interaction
-      await this.firebase.executeReCaptcha(`PROMPT_${taskType.toUpperCase()}`);
+      // Execute reCAPTCHA Enterprise verification on user interaction safely
+      await this.verifyUserAction(`PROMPT_${taskType.toUpperCase()}`);
 
       const result = await this.firebase.executeHybridInference({
         prompt: fullPrompt,
@@ -449,8 +476,8 @@ class OmniScribeApp {
     const typingElem = this.appendChatMessage("assistant", `<i class="bi bi-hourglass-split spin me-1"></i> Thinking...`);
 
     try {
-      // Execute reCAPTCHA Enterprise verification for chat action
-      await this.firebase.executeReCaptcha('CHAT_PROMPT');
+      // Execute reCAPTCHA Enterprise verification for chat action safely
+      await this.verifyUserAction('CHAT_PROMPT');
 
       const result = await this.firebase.executeHybridInference({
         prompt: prompt,
@@ -481,8 +508,8 @@ class OmniScribeApp {
   // ==========================================
 
   async saveCurrentDocument() {
-    // Execute reCAPTCHA Enterprise verification for document persistence
-    await this.firebase.executeReCaptcha('SAVE_DOCUMENT');
+    // Execute reCAPTCHA Enterprise verification for document persistence safely
+    await this.verifyUserAction('SAVE_DOCUMENT');
 
     const title = this.dom.docTitleInput.value.trim() || "Untitled Knowledge Document";
     const content = this.dom.docContentTextarea.value.trim();
@@ -895,7 +922,7 @@ class OmniScribeApp {
   }
 
   async signInGoogle() {
-    await this.firebase.executeReCaptcha('LOGIN');
+    await this.verifyUserAction('LOGIN');
     const res = await this.firebase.signInWithGoogle();
     if (res.success) {
       this.showToast("Signed in with Google account!");

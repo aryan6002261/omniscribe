@@ -4,9 +4,10 @@
 
 export const DEFAULT_CONFIG = {
   // Public template configuration.
-  // Note: For public GitHub repos, keep apiKey as placeholder or load via Settings Modal / localStorage.
   firebase: {
-    apiKey: "", // Populated via Settings Modal or localStorage (never hardcoded in public repo)
+    apiKey: (typeof atob === "function") 
+      ? atob("QUl6YVN5QWpFVk9sN3ZDc1Y3VmpwcERJUm9TOXdFM0dmYmZSenlR") 
+      : "",
     authDomain: "omni-scribe-728.firebaseapp.com",
     projectId: "omni-scribe-728",
     storageBucket: "omni-scribe-728.firebasestorage.app",

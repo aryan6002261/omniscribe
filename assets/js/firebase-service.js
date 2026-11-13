@@ -9,7 +9,7 @@ import {
   loadUserFirebaseConfig,
   loadAppCheckDebugToken,
   loadUserSettings
-} from "./config.js";
+} from "./config.js?v=2.2.0";
 
 export class FirebaseService {
   constructor(nanoDetector) {

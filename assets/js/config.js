@@ -3,9 +3,10 @@
  */
 
 export const DEFAULT_CONFIG = {
-  // Live Firebase Project configuration from user
+  // Public template configuration.
+  // Note: For public GitHub repos, keep apiKey as placeholder or load via Settings Modal / localStorage.
   firebase: {
-    apiKey: "AIzaSyAjEVOl7vCsV7VjppDIRoS9wE3GfbfRzyQ",
+    apiKey: "", // Populated via Settings Modal or localStorage (never hardcoded in public repo)
     authDomain: "omni-scribe-728.firebaseapp.com",
     projectId: "omni-scribe-728",
     storageBucket: "omni-scribe-728.firebasestorage.app",
@@ -50,8 +51,7 @@ export function loadUserFirebaseConfig() {
     const saved = localStorage.getItem(STORAGE_KEY_FIREBASE);
     if (saved) {
       const parsed = JSON.parse(saved);
-      // Only prioritize localStorage if it has non-demo custom keys
-      if (parsed && parsed.apiKey && !parsed.apiKey.includes("DEMO")) {
+      if (parsed && parsed.apiKey) {
         return { ...DEFAULT_CONFIG.firebase, ...parsed };
       }
     }

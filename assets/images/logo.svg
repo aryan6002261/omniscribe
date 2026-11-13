@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="hybridGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0d6efd" />
+      <stop offset="50%" stop-color="#6610f2" />
+      <stop offset="100%" stop-color="#0dcaf0" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+  <!-- Background Badge -->
+  <rect x="4" y="4" width="40" height="40" rx="12" fill="url(#hybridGrad)" />
+  <!-- Circuit & Brain Mesh -->
+  <circle cx="24" cy="24" r="14" fill="none" stroke="#ffffff" stroke-width="2" stroke-opacity="0.3" stroke-dasharray="2,3" />
+  <!-- Central Lightning / Edge Icon -->
+  <path d="M26 12 L16 26 L23 26 L21 36 L32 22 L25 22 Z" fill="#ffffff" filter="url(#glow)" />
+  <!-- Orbiting Nodes representing On-Device + Cloud -->
+  <circle cx="14" cy="16" r="3" fill="#00ffcc" />
+  <circle cx="34" cy="32" r="3" fill="#ffc107" />
+</svg>

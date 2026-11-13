@@ -1,0 +1,175 @@
+/**
+ * OmniScribe Hybrid AI - Custom Stylesheet
+ * Complements Bootstrap 5.3 with high-tech edge aesthetics and telemetry styling.
+ */
+
+:root {
+  --hybrid-gradient: linear-gradient(135deg, #0d6efd 0%, #6610f2 50%, #0dcaf0 100%);
+  --telemetry-bg: #0f172a;
+  --telemetry-border: #1e293b;
+  --card-border-radius: 14px;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: #f8fafc;
+  color: #1e293b;
+  min-height: 100vh;
+}
+
+/* Navbar */
+.navbar-brand img {
+  filter: drop-shadow(0 2px 8px rgba(13, 110, 253, 0.3));
+}
+
+.brand-title {
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  background: var(--hybrid-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Glassmorphism Cards */
+.card-glass {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: var(--card-border-radius);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-glass:hover {
+  box-shadow: 0 10px 25px -4px rgba(0, 0, 0, 0.08);
+}
+
+/* Telemetry Dashboard Strip */
+.telemetry-card {
+  background: var(--telemetry-bg);
+  border: 1px solid var(--telemetry-border);
+  border-radius: var(--card-border-radius);
+  color: #f1f5f9;
+  position: relative;
+  overflow: hidden;
+}
+
+.telemetry-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--hybrid-gradient);
+}
+
+.telemetry-metric-box {
+  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid rgba(51, 65, 85, 0.6);
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+
+.telemetry-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #94a3b8;
+  margin-bottom: 2px;
+}
+
+.telemetry-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+/* Pulse / Spin Animations */
+.spin {
+  animation: spin 1.5s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 6px;
+  animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  50% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0.8; }
+}
+
+/* Chat Assistant */
+.chat-window {
+  height: 380px;
+  overflow-y: auto;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+}
+
+.chat-bubble {
+  font-size: 0.92rem;
+  line-height: 1.5;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.chat-user {
+  background: #0d6efd !important;
+  color: #ffffff;
+}
+
+.chat-assistant {
+  background: #f1f5f9 !important;
+  color: #1e293b;
+  border: 1px solid #e2e8f0;
+}
+
+/* Markdown Formatted Content in Output */
+.formatted-output h3, .formatted-output h4, .formatted-output h5 {
+  letter-spacing: -0.3px;
+}
+
+.formatted-output pre {
+  font-size: 0.88rem;
+  border-radius: 8px;
+}
+
+.formatted-output blockquote {
+  font-style: italic;
+}
+
+/* Scenario Badges */
+.scenario-btn {
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.scenario-btn:hover {
+  transform: translateY(-1px);
+}
+
+/* Tooltip & Micro-badges */
+.badge-subtle {
+  font-weight: 600;
+  font-size: 0.78rem;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 991px) {
+  .chat-window {
+    height: 300px;
+  }
+}

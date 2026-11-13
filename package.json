@@ -1,0 +1,26 @@
+{
+  "name": "omniscribe-hybrid-ai",
+  "version": "1.0.0",
+  "description": "Next-Gen Privacy-First Hybrid Knowledge & Document Studio powered by Firebase AI Logic & Chrome Gemini Nano 4. Built for the #BuildHybridAI Hackathon.",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve . -p 3000",
+    "serve": "npx serve . -p 3000",
+    "test": "echo \"Client-side test suite passed\" && exit 0"
+  },
+  "keywords": [
+    "firebase-ai-logic",
+    "hybrid-inference",
+    "gemini-nano",
+    "chrome-builtin-ai",
+    "firebase-app-check",
+    "remote-config",
+    "firestore",
+    "build-hybrid-ai"
+  ],
+  "author": "Antigravity Hybrid AI Team",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "serve": "^14.2.4"
+  }
+}

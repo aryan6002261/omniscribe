@@ -50,7 +50,10 @@ export function loadUserFirebaseConfig() {
     const saved = localStorage.getItem(STORAGE_KEY_FIREBASE);
     if (saved) {
       const parsed = JSON.parse(saved);
-      return { ...DEFAULT_CONFIG.firebase, ...parsed };
+      // Only prioritize localStorage if it has non-demo custom keys
+      if (parsed && parsed.apiKey && !parsed.apiKey.includes("DEMO")) {
+        return { ...DEFAULT_CONFIG.firebase, ...parsed };
+      }
     }
   } catch (e) {
     console.warn("Failed to load saved Firebase config", e);

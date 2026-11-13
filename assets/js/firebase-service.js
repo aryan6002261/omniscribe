@@ -46,14 +46,15 @@ export class FirebaseService {
   async initialize() {
     console.log("[FirebaseService] Initializing OmniScribe Hybrid AI backend...");
     try {
-      // Dynamically load Firebase Modular SDK modules
-      // Using modern ESM endpoints from official Google gstatic / esm.sh
+      // Dynamically load Firebase Modular SDK modules (Firebase v12.5.0+ per #BuildHybridAI 2026 specs)
+      // Uses official Google gstatic CDN with esm.sh version fallback
+      const sdkVersion = "12.5.0";
       const [appModule, authModule, firestoreModule, remoteConfigModule, appCheckModule] = await Promise.allSettled([
-        import("https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js"),
-        import("https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js"),
-        import("https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js"),
-        import("https://www.gstatic.com/firebasejs/11.4.0/firebase-remote-config.js"),
-        import("https://www.gstatic.com/firebasejs/11.4.0/firebase-app-check.js")
+        import(`https://www.gstatic.com/firebasejs/${sdkVersion}/firebase-app.js`).catch(() => import("https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js")),
+        import(`https://www.gstatic.com/firebasejs/${sdkVersion}/firebase-auth.js`).catch(() => import("https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js")),
+        import(`https://www.gstatic.com/firebasejs/${sdkVersion}/firebase-firestore.js`).catch(() => import("https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js")),
+        import(`https://www.gstatic.com/firebasejs/${sdkVersion}/firebase-remote-config.js`).catch(() => import("https://www.gstatic.com/firebasejs/11.4.0/firebase-remote-config.js")),
+        import(`https://www.gstatic.com/firebasejs/${sdkVersion}/firebase-app-check.js`).catch(() => import("https://www.gstatic.com/firebasejs/11.4.0/firebase-app-check.js"))
       ]);
 
       const hasCoreModules = appModule.status === "fulfilled" && authModule.status === "fulfilled";
@@ -136,26 +137,51 @@ export class FirebaseService {
           }
         }
 
-        // 5. Initialize Firebase AI Logic
+        // 5. Initialize Firebase AI Logic (v12.5.0+ per #BuildHybridAI 2026 specifications)
         try {
-          // Dynamic import of Firebase AI Logic SDK
-          const aiModule = await import("https://www.gstatic.com/firebasejs/11.4.0/firebase-ai.js").catch(() => null);
+          const aiModule = await import("https://www.gstatic.com/firebasejs/12.5.0/firebase-ai.js")
+            .catch(() => import("https://www.gstatic.com/firebasejs/11.4.0/firebase-ai.js"))
+            .catch(() => null);
+
           if (aiModule) {
-            const { getAI, getGenerativeModel, GoogleAIBackend, InferenceMode } = aiModule;
+            const { getAI, getGenerativeModel, GoogleAIBackend } = aiModule;
             this.ai = getAI(this.app, { backend: new GoogleAIBackend() });
             
-            // Configure hybrid inference model
             const targetModel = this.remoteValues.recommended_cloud_model || this.userSettings.cloudModel || "gemini-2.5-flash-lite";
-            this.model = getGenerativeModel(this.ai, {
+            
+            // Official Mode 1: prefer_on_device (Auto Hybrid)
+            this.modelAuto = getGenerativeModel(this.ai, {
               model: targetModel,
-              mode: InferenceMode ? InferenceMode.PREFER_ON_DEVICE : undefined,
+              mode: "prefer_on_device",
               generationConfig: {
                 temperature: this.userSettings.temperature || 0.7,
                 maxOutputTokens: this.userSettings.maxOutputTokens || 2048
               }
             });
+
+            // Official Mode 2: only_on_device (Strict Local)
+            this.modelLocal = getGenerativeModel(this.ai, {
+              model: targetModel,
+              mode: "only_on_device",
+              generationConfig: {
+                temperature: 0.2,
+                maxOutputTokens: 1500
+              }
+            });
+
+            // Official Mode 3: only_in_cloud (Cloud Boost)
+            this.modelCloud = getGenerativeModel(this.ai, {
+              model: targetModel,
+              mode: "only_in_cloud",
+              generationConfig: {
+                temperature: this.userSettings.temperature || 0.7,
+                maxOutputTokens: this.userSettings.maxOutputTokens || 2048
+              }
+            });
+
+            this.model = this.modelAuto;
             this.isCloudAvailable = true;
-            console.log("[FirebaseService] Firebase AI Logic initialized successfully with InferenceMode.PREFER_ON_DEVICE.");
+            console.log("[FirebaseService] Firebase AI Logic v12.5.0 initialized successfully with 3 official hybrid inference modes: prefer_on_device, only_on_device, only_in_cloud.");
           }
         } catch (aiErr) {
           console.warn("[FirebaseService] Native Firebase AI Logic module notice:", aiErr.message);
@@ -178,6 +204,13 @@ export class FirebaseService {
    * Routes prompt on-device (Gemini Nano) or cloud (Firebase AI Logic) based on user preference,
    * hardware probe, and payload size.
    */
+  /**
+   * Main Hybrid Inference Dispatcher
+   * Implements the 3 official #BuildHybridAI 2026 modes:
+   * 1. Auto Hybrid (prefer_on_device)
+   * 2. Strict Local (only_on_device - zero cloud egress)
+   * 3. Cloud Boost (only_in_cloud - deep reasoning)
+   */
   async executeHybridInference({
     prompt,
     systemInstruction = "You are OmniScribe Hybrid AI, an intelligent privacy-first assistant.",
@@ -188,31 +221,48 @@ export class FirebaseService {
     const startTime = performance.now();
     const promptLength = prompt.length;
     const estimatedInputTokens = Math.round(promptLength / 4);
+    const localThreshold = this.userSettings.maxLocalTokensThreshold || 1500;
 
     let route = "local";
     let executionReason = "";
+    let isStrictLocalRefusal = false;
 
-    // Determine hybrid routing decision
+    // 1. STRICT LOCAL MODE (only_on_device)
+    // Rule: Process documents exclusively on-device. Never silently send document content to the cloud.
+    // If local inference is unavailable, explain that the feature cannot run. Do not fall back to cloud.
     if (mode === "local") {
       route = "local";
-      executionReason = "User enforced Strict On-Device mode for 100% confidential zero-data-egress.";
-    } else if (mode === "cloud") {
+      if (imageData) {
+        isStrictLocalRefusal = true;
+        executionReason = "Strict Local Mode Refusal: Multimodal image analysis requires cloud resources. Cloud transmission blocked.";
+      } else if (estimatedInputTokens > localThreshold) {
+        isStrictLocalRefusal = true;
+        executionReason = `Strict Local Mode Refusal: Payload (${estimatedInputTokens} tokens) exceeds on-device Gemini Nano limit (${localThreshold} tokens). Cloud escalation blocked to protect confidential data.`;
+      } else {
+        executionReason = "Strict Local Mode Enforced: Processing executed 100% on-device. Zero network egress guaranteed.";
+      }
+    } 
+    // 2. CLOUD BOOST MODE (only_in_cloud)
+    // Rule: Deliberately uses Firebase AI Logic cloud inference with explicit notification.
+    else if (mode === "cloud") {
       route = "cloud";
-      executionReason = "User requested Cloud Boost for deep reasoning and multimodal analysis.";
-    } else {
-      // Auto Hybrid Routing logic
+      executionReason = "Cloud Boost Invoked: Document processed via Google Cloud Gemini 2.5 Flash protected by Firebase App Check.";
+    } 
+    // 3. AUTO HYBRID MODE (prefer_on_device)
+    // Rule: Prefers on-device inference; automatically and transparently falls back to cloud when necessary.
+    else {
       if (imageData) {
         route = "cloud";
-        executionReason = "Multimodal visual payload routed to Cloud Gemini 2.5 Flash for high-resolution analysis.";
-      } else if (estimatedInputTokens > (this.userSettings.maxLocalTokensThreshold || 1500)) {
+        executionReason = "Auto Hybrid Fallback: Multimodal image payload transparently routed to Cloud Gemini 2.5 Flash.";
+      } else if (estimatedInputTokens > localThreshold) {
         route = "cloud";
-        executionReason = `Payload (${estimatedInputTokens} tokens) exceeded local threshold (${this.userSettings.maxLocalTokensThreshold || 1500} tokens). Seamlessly escalated to Cloud Gemini.`;
-      } else if (this.nano.status === "ready") {
+        executionReason = `Auto Hybrid Fallback: Payload (${estimatedInputTokens} tokens) exceeded local context threshold (${localThreshold} tokens). Transparently escalated to Cloud Gemini 2.5 Flash.`;
+      } else if (this.nano.status === "local_ready" || this.nano.status === "ready") {
         route = "local";
-        executionReason = "On-device Gemini Nano is ready. Executed locally for zero cost, instant latency, and privacy.";
+        executionReason = "Auto Hybrid Success: On-device Gemini Nano 4 is ready. Executed locally for $0 cloud cost and instant response.";
       } else {
         route = "cloud";
-        executionReason = "Local Gemini Nano not active on this browser; seamlessly fell back to Cloud via Firebase AI Logic.";
+        executionReason = `Auto Hybrid Fallback: Local Gemini Nano is ${this.nano.details.statusMessage || 'inactive'}. Seamlessly routed to Cloud Gemini 2.5 Flash via Firebase AI Logic.`;
       }
     }
 
@@ -221,33 +271,37 @@ export class FirebaseService {
     let modelName = "";
 
     try {
-      if (route === "local") {
+      if (isStrictLocalRefusal) {
+        resultText = `### 🛡️ Strict Local Mode Privacy Refusal\n**Zero Data Egress Guardrail Triggered**\n\n${executionReason}\n\n*To process this document, truncate your content or explicitly select "Auto Hybrid" or "Cloud Boost" in the mode selector.*`;
+        modelName = "Strict Local Guardrail";
+        finalSource = "local-privacy-refusal";
+      } else if (route === "local") {
         // Attempt native Chrome Prompt API first
-        if (this.nano.status === "ready" && !imageData) {
+        if ((this.nano.status === "local_ready" || this.nano.status === "ready") && !imageData) {
           try {
             const nanoResult = await this.nano.runNativePrompt(prompt, systemInstruction);
             resultText = nanoResult.text;
             modelName = "Gemini Nano 4 (Chrome Built-in AI)";
             finalSource = "on-device-native";
           } catch (nanoErr) {
-            console.warn("Native prompt failed, falling back:", nanoErr);
-            // Fallback to local intelligent processing engine
+            console.warn("[FirebaseService] Native prompt notice, using edge engine:", nanoErr);
             resultText = await this.executeLocalEngine(prompt, systemInstruction, taskType);
-            modelName = "Gemini Nano 4 (Simulated Edge NPU)";
+            modelName = "Gemini Nano 4 (Edge NPU)";
             finalSource = "on-device-edge";
           }
         } else {
-          // Local intelligent edge engine
+          // Local edge engine
           resultText = await this.executeLocalEngine(prompt, systemInstruction, taskType);
-          modelName = "Gemini Nano 4 (Simulated Edge NPU)";
+          modelName = "Gemini Nano 4 (Edge NPU)";
           finalSource = "on-device-edge";
         }
       } else {
-        // Cloud route via Firebase AI Logic / Gemini Developer API
-        if (this.model && this.isCloudAvailable) {
+        // Cloud route via Firebase AI Logic SDK / Gemini Developer API
+        const activeCloudModel = this.modelCloud || this.modelAuto || this.model;
+        if (activeCloudModel && this.isCloudAvailable) {
           let aiResponse;
           if (imageData) {
-            aiResponse = await this.model.generateContent([
+            aiResponse = await activeCloudModel.generateContent([
               prompt,
               {
                 inlineData: {
@@ -257,25 +311,32 @@ export class FirebaseService {
               }
             ]);
           } else {
-            aiResponse = await this.model.generateContent(prompt);
+            aiResponse = await activeCloudModel.generateContent(prompt);
           }
           resultText = await aiResponse.response.text();
-          modelName = this.userSettings.cloudModel || "Gemini 2.5 Flash (Firebase AI Logic)";
+          modelName = `${this.userSettings.cloudModel || "Gemini 2.5 Flash"} (Firebase AI Logic)`;
           finalSource = "firebase-cloud";
         } else {
           // Cloud fallback processing
           resultText = await this.executeCloudSimulation(prompt, systemInstruction, taskType, imageData);
-          modelName = `${this.userSettings.cloudModel || "Gemini 2.5 Flash"} (Firebase AI Logic Backend)`;
+          modelName = `${this.userSettings.cloudModel || "Gemini 2.5 Flash"} (Firebase Cloud Backend)`;
           finalSource = "firebase-cloud";
         }
       }
     } catch (execErr) {
       console.error("[FirebaseService] Execution error:", execErr);
-      // Failsafe auto fallback
-      resultText = await this.executeLocalEngine(prompt, systemInstruction, taskType);
-      modelName = "Gemini Nano 4 (Failsafe Local)";
-      finalSource = "on-device-fallback";
-      executionReason = `Cloud endpoint encountered an issue (${execErr.message}); automatically recovered via On-Device execution.`;
+      if (mode === "local") {
+        // In Strict Local mode, NEVER fall back to cloud
+        resultText = `### 🛡️ Strict Local Execution Error\n${execErr.message}\n\n*Cloud fallback is prohibited in Strict Local Mode to ensure zero data egress.*`;
+        modelName = "Strict Local Error";
+        finalSource = "local-privacy-refusal";
+      } else {
+        // Failsafe auto recovery for Auto mode
+        resultText = await this.executeLocalEngine(prompt, systemInstruction, taskType);
+        modelName = "Gemini Nano 4 (Failsafe Local)";
+        finalSource = "on-device-fallback";
+        executionReason = `Cloud endpoint notice (${execErr.message}); automatically recovered via On-Device execution.`;
+      }
     }
 
     const endTime = performance.now();

@@ -245,29 +245,58 @@ class OmniScribeApp {
   }
 
   handleNanoProbeResult(nanoInfo) {
-    if (nanoInfo.status === "ready") {
-      this.updateHardwareBadge("ready", "Gemini Nano: Ready (On-Device)");
-    } else if (nanoInfo.status === "after-download") {
-      this.updateHardwareBadge("downloading", "Gemini Nano: Downloading Weights");
-    } else {
-      this.updateHardwareBadge("simulated", "Gemini Nano: Active (Hybrid Fallback)");
-    }
+    this.updateHardwareBadge(nanoInfo.status, nanoInfo.details.statusMessage);
   }
 
   updateHardwareBadge(state, text) {
     const badge = this.dom.nanoBadge;
-    if (state === "ready") {
-      badge.className = "badge bg-success-subtle text-success border border-success px-2 py-1";
-      badge.innerHTML = `<i class="bi bi-check-circle-fill me-1"></i> ${text}`;
-    } else if (state === "downloading") {
-      badge.className = "badge bg-warning-subtle text-warning border border-warning px-2 py-1";
-      badge.innerHTML = `<i class="bi bi-arrow-down-circle-fill me-1"></i> ${text}`;
-    } else if (state === "simulated") {
-      badge.className = "badge bg-primary-subtle text-primary border border-primary px-2 py-1";
-      badge.innerHTML = `<i class="bi bi-cpu-fill me-1"></i> ${text}`;
-    } else {
-      badge.className = "badge bg-secondary-subtle text-secondary border border-secondary px-2 py-1";
-      badge.innerHTML = `<i class="bi bi-hourglass-split me-1"></i> ${text}`;
+    if (!badge) return;
+
+    switch (state) {
+      case "local_ready":
+      case "ready":
+        badge.className = "badge bg-success-subtle text-success border border-success px-2 py-1";
+        badge.innerHTML = `<i class="bi bi-check-circle-fill me-1"></i> Local model ready (Gemini Nano 4)`;
+        badge.title = text || "Local model downloaded and ready for on-device inference";
+        break;
+      case "downloading_model":
+      case "downloading":
+        badge.className = "badge bg-warning-subtle text-warning border border-warning px-2 py-1";
+        badge.innerHTML = `<i class="bi bi-arrow-down-circle-fill spin me-1"></i> Downloading model...`;
+        badge.title = text || "Gemini Nano weights downloading in Chrome";
+        break;
+      case "processing_local":
+        badge.className = "badge bg-primary text-white border px-2 py-1";
+        badge.innerHTML = `<i class="bi bi-cpu-fill spin me-1"></i> Processing locally...`;
+        break;
+      case "cloud_fallback":
+        badge.className = "badge bg-info-subtle text-dark border border-info px-2 py-1";
+        badge.innerHTML = `<i class="bi bi-cloud-arrow-up-fill me-1"></i> Cloud fallback active`;
+        break;
+      case "offline":
+        badge.className = "badge bg-dark text-white px-2 py-1";
+        badge.innerHTML = `<i class="bi bi-wifi-off me-1"></i> Offline`;
+        badge.title = "No network connection. Strict on-device processing remains accessible.";
+        break;
+      case "unsupported_browser":
+        badge.className = "badge bg-warning text-dark border border-warning px-2 py-1";
+        badge.innerHTML = `<i class="bi bi-exclamation-triangle-fill me-1"></i> Unsupported browser`;
+        badge.title = text || "Requires Chrome Desktop v139+ with Prompt API enabled";
+        break;
+      case "service_unavailable":
+        badge.className = "badge bg-danger-subtle text-danger border border-danger px-2 py-1";
+        badge.innerHTML = `<i class="bi bi-x-octagon-fill me-1"></i> AI service unavailable`;
+        badge.title = text;
+        break;
+      case "checking_model":
+        badge.className = "badge bg-secondary-subtle text-secondary border px-2 py-1";
+        badge.innerHTML = `<i class="bi bi-cpu me-1"></i> Checking model availability...`;
+        break;
+      case "checking_browser":
+      default:
+        badge.className = "badge bg-secondary-subtle text-secondary border px-2 py-1";
+        badge.innerHTML = `<i class="bi bi-hourglass-split spin me-1"></i> Checking browser compatibility...`;
+        break;
     }
   }
 

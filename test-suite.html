@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>OmniScribe Functionality Test Runner</title>
+</head>
+<body>
+  <h1>OmniScribe Functionality Test Runner</h1>
+  <div id="results">Running tests...</div>
+
+  <script type="module">
+    import { SAMPLE_SCENARIOS } from "./assets/js/sample-data.js";
+    import { NanoDetector } from "./assets/js/nano-detector.js";
+    import { FirebaseService } from "./assets/js/firebase-service.js";
+    import { DEFAULT_CONFIG } from "./assets/js/config.js";
+
+    const testResults = [];
+
+    function assert(testNum, name, condition, details = "") {
+      const passed = !!condition;
+      testResults.push({ testNum, name, passed, details });
+      console.log(`[Test ${testNum}/8] ${passed ? '✅ PASS' : '❌ FAIL'}: ${name} - ${details}`);
+    }
+
+    async function runAllTests() {
+      try {
+        const nano = new NanoDetector();
+        const firebase = new FirebaseService(nano);
+
+        // ==========================================
+        // TEST 1: Website loads correctly
+        // ==========================================
+        const hasScenarios = SAMPLE_SCENARIOS && Object.keys(SAMPLE_SCENARIOS).length >= 4;
+        const hasConfig = DEFAULT_CONFIG && DEFAULT_CONFIG.firebase && DEFAULT_CONFIG.ai;
+        assert(1, "Website loads correctly", hasScenarios && hasConfig, `Loaded ${Object.keys(SAMPLE_SCENARIOS).length} pre-built scenarios and config`);
+
+        // ==========================================
+        // TEST 2: Guest Mode works
+        // ==========================================
+        const authRes = await firebase.signInAnonymousUser();
+        const guestUserValid = authRes.success && authRes.user && authRes.user.uid;
+        assert(2, "Guest Mode works", guestUserValid, `Signed in as: ${authRes.user?.displayName || authRes.user?.uid}`);
+
+        // ==========================================
+        // TEST 3: Auto-Summarize generates a summary
+        // ==========================================
+        const clinicalText = SAMPLE_SCENARIOS.clinical.content;
+        const summaryRes = await firebase.executeHybridInference({
+          prompt: `Summarize this:\n${clinicalText}`,
+          mode: "auto",
+          taskType: "summary"
+        });
+        const summaryValid = summaryRes.text && summaryRes.text.includes("Executive Summary") && summaryRes.telemetry;
+        assert(3, "Auto-Summarize generates a summary", summaryValid, `Generated ${summaryRes.text.length} chars summary in ${summaryRes.telemetry.latencyMs}ms`);
+
+        // ==========================================
+        // TEST 4: Redact PII removes sensitive information
+        // ==========================================
+        const redactRes = await firebase.executeHybridInference({
+          prompt: clinicalText,
+          mode: "local",
+          taskType: "redact"
+        });
+        const containsRedactions = redactRes.text.includes("[REDACTED_NAME]") &&
+                                   redactRes.text.includes("[REDACTED_CLINICIAN]") &&
+                                   redactRes.text.includes("[REDACTED_DOB]") &&
+                                   redactRes.text.includes("[REDACTED_MRN]");
+        const noOriginalNames = !redactRes.text.includes("Eleanor Vance") && !redactRes.text.includes("948201-B");
+        assert(4, "Redact PII removes sensitive information", containsRedactions && noOriginalNames, "PII/PHI masked with zero-data-egress");
+
+        // ==========================================
+        // TEST 5: Action Items generates results
+        // ==========================================
+        const boardText = SAMPLE_SCENARIOS.board_meeting.content;
+        const actionRes = await firebase.executeHybridInference({
+          prompt: `Extract action items:\n${boardText}`,
+          mode: "auto",
+          taskType: "action_items"
+        });
+        const actionValid = actionRes.text && actionRes.text.includes("[ACTION ITEM]") && actionRes.telemetry;
+        assert(5, "Action Items generates results", actionValid, `Extracted action items with latency ${actionRes.telemetry.latencyMs}ms`);
+
+        // ==========================================
+        // TEST 6: Gemini cloud response works
+        // ==========================================
+        const cloudRes = await firebase.executeHybridInference({
+          prompt: "Analyze technical cloud architecture spec",
+          mode: "cloud",
+          taskType: "general"
+        });
+        const cloudValid = cloudRes.text && cloudRes.telemetry.finalSource === "firebase-cloud";
+        assert(6, "Gemini cloud response works", cloudValid, `Cloud route executed via ${cloudRes.telemetry.modelName}`);
+
+        // ==========================================
+        // TEST 7: Firestore saves a document
+        // ==========================================
+        const testDoc = {
+          id: "test-doc-" + Date.now(),
+          title: "Automated Verification Test Document",
+          category: "QA Validation",
+          content: "Confidential clinical data for automated validation suite.",
+          modeUsed: "auto"
+        };
+        const savedDoc = await firebase.saveNoteToFirestore(testDoc);
+        const savedValid = savedDoc && savedDoc.id === testDoc.id && savedDoc.updatedAt;
+        assert(7, "Firestore saves a document", savedValid, `Saved doc: ${testDoc.id}`);
+
+        // ==========================================
+        // TEST 8: Saved document remains after refreshing
+        // ==========================================
+        // Simulate a new session / refresh by reading back from local storage persistence
+        const reloadedNotes = firebase.getLocalNotes();
+        const foundSavedDoc = reloadedNotes.find(n => n.id === testDoc.id);
+        const refreshValid = !!foundSavedDoc && foundSavedDoc.title === testDoc.title;
+        assert(8, "Saved document remains after refreshing", refreshValid, `Reloaded doc title: ${foundSavedDoc?.title}`);
+
+        // Output overall results
+        const passCount = testResults.filter(t => t.passed).length;
+        const html = `
+          <h2>Test Results: ${passCount}/8 Passed</h2>
+          <ul>
+            ${testResults.map(t => `<li><strong>${t.passed ? '✅ PASS' : '❌ FAIL'}</strong>: Test ${t.testNum} - ${t.name} (<em>${t.details}</em>)</li>`).join("")}
+          </ul>
+          <div id="summaryStatus">${passCount === 8 ? 'ALL_TESTS_PASSED' : 'TESTS_FAILED'}</div>
+        `;
+        document.getElementById("results").innerHTML = html;
+        window.__TEST_RESULTS__ = testResults;
+      } catch (err) {
+        console.error("Test execution failed:", err);
+        document.getElementById("results").innerHTML = `<h2 style="color:red;">Error: ${err.message}</h2>`;
+      }
+    }
+
+    runAllTests();
+  </script>
+</body>
+</html>

@@ -333,11 +333,11 @@ body {
    STUDIO TABS & CHAT
    ========================================== */
 .custom-studio-tabs .nav-link {
-  font-size: 0.83rem;
+  font-size: 0.82rem;
   font-weight: 600;
   color: #64748b;
   border-radius: 8px;
-  padding: 6px 12px;
+  padding: 5px 10px;
   transition: all 0.15s ease;
 }
 
@@ -346,10 +346,16 @@ body {
   color: #0f172a;
 }
 
-.chat-thread-container {
-  height: 380px;
+.studio-tab-content {
+  min-height: 80px;
+  max-height: 520px;
   overflow-y: auto;
-  padding: 12px;
+}
+
+.chat-thread-container {
+  height: 280px;
+  overflow-y: auto;
+  padding: 10px;
   background: #f8fafc;
   border: 1px solid var(--surface-border);
   border-radius: var(--radius-md);
@@ -359,11 +365,11 @@ body {
   background-color: var(--brand-primary);
   color: #ffffff;
   border-radius: 12px 12px 2px 12px;
-  padding: 8px 14px;
-  font-size: 0.88rem;
+  padding: 8px 12px;
+  font-size: 0.85rem;
   line-height: 1.5;
   margin-left: auto;
-  max-width: 82%;
+  max-width: 85%;
   box-shadow: 0 1px 3px rgba(79, 70, 229, 0.15);
 }
 
@@ -372,17 +378,17 @@ body {
   color: #1e293b;
   border: 1px solid var(--surface-border);
   border-radius: 12px 12px 12px 2px;
-  padding: 10px 14px;
-  font-size: 0.88rem;
+  padding: 8px 12px;
+  font-size: 0.85rem;
   line-height: 1.55;
-  max-width: 88%;
+  max-width: 90%;
   box-shadow: var(--shadow-xs);
 }
 
 /* Output Typography */
 .formatted-output-body {
-  font-size: 0.9rem;
-  line-height: 1.65;
+  font-size: 0.88rem;
+  line-height: 1.6;
   color: #1e293b;
 }
 
@@ -392,64 +398,160 @@ body {
   color: #0f172a;
   font-weight: 700;
   letter-spacing: -0.02em;
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;
+  margin-top: 0.75rem;
+  margin-bottom: 0.35rem;
 }
 
 .formatted-output-body pre {
   background-color: #0f172a;
   color: #f8fafc;
   border-radius: var(--radius-sm);
-  padding: 12px;
+  padding: 10px;
   font-family: var(--font-mono);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
 }
 
 .formatted-output-body blockquote {
   border-left: 3px solid var(--brand-primary);
-  padding-left: 12px;
+  padding-left: 10px;
   color: #475569;
   font-style: italic;
-  margin: 12px 0;
+  margin: 8px 0;
 }
 
-/* Empty state design */
+/* Empty state design - Compact & Non-bloated */
 .empty-state-card {
-  padding: 40px 20px;
+  padding: 18px 14px;
   text-align: center;
+  background: #f8fafc;
+  border: 1px dashed var(--surface-border);
+  border-radius: var(--radius-md);
+  margin: 4px 0;
 }
 
 .empty-state-icon {
-  width: 52px;
-  height: 52px;
-  background: #f1f5f9;
-  border-radius: 16px;
+  width: 38px;
+  height: 38px;
+  background: #ffffff;
+  border-radius: 10px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 14px;
+  margin-bottom: 8px;
   color: var(--brand-primary);
+  box-shadow: var(--shadow-xs);
 }
 
 .quick-starter-pill {
   border: 1px solid #e2e8f0;
   background: #ffffff;
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-size: 0.78rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
   color: #475569;
   cursor: pointer;
   transition: all 0.15s ease;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
 }
 
 .quick-starter-pill:hover {
-  background: #f8fafc;
+  background: #f1f5f9;
   border-color: #cbd5e1;
   color: #0f172a;
   transform: translateY(-1px);
+}
+
+/* Horizontal scroll strip for presets */
+.preset-scroll-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+
+.preset-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 991.98px) {
+  .document-editor-textarea {
+    rows: 7;
+    min-height: 140px;
+    padding: 10px;
+    font-size: 0.82rem;
+  }
+
+  .chat-thread-container {
+    height: 220px;
+  }
+
+  .telemetry-strip-card {
+    padding: 10px 12px;
+  }
+
+  .telemetry-chip {
+    padding: 5px 8px;
+  }
+
+  .telemetry-chip-label {
+    font-size: 0.62rem;
+  }
+
+  .telemetry-chip-value {
+    font-size: 0.85rem;
+  }
+
+  .telemetry-reason-box {
+    font-size: 0.72rem;
+    padding: 4px 8px;
+  }
+
+  .status-indicator-chip {
+    font-size: 0.7rem;
+    padding: 2px 7px;
+  }
+
+  .brand-name {
+    font-size: 1rem;
+  }
+
+  .segmented-mode-picker {
+    width: 100%;
+  }
+
+  .segmented-mode-btn {
+    flex: 1;
+    justify-content: center;
+    font-size: 0.73rem;
+    padding: 5px 4px;
+  }
+
+  .workflow-buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+
+  .workflow-buttons-grid .btn-workflow-wide {
+    grid-column: span 2;
+  }
+
+  .empty-state-card {
+    padding: 14px 10px;
+  }
+
+  .quick-starter-pill {
+    font-size: 0.7rem;
+    padding: 3px 8px;
+  }
 }
 
 /* Pulse / Spin Animations */

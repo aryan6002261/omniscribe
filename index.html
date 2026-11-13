@@ -94,27 +94,27 @@
   <!-- Sub-Header: Mode Selector & Starter Templates -->
   <div class="bg-white border-bottom py-2 shadow-xs">
     <div class="container-fluid px-3 px-xl-4 d-flex flex-wrap align-items-center justify-content-between gap-2">
-      <!-- Preset Scenarios -->
-      <div class="d-flex align-items-center flex-wrap gap-1">
-        <span class="small fw-semibold text-muted me-1"><i class="bi bi-folder2-open text-primary me-1"></i>Starter Templates:</span>
-        <button class="preset-chip" data-scenario-id="clinical">
+      <!-- Preset Scenarios (Horizontally scrollable on mobile) -->
+      <div class="preset-scroll-container flex-grow-1 me-lg-3 py-1">
+        <span class="small fw-semibold text-muted text-nowrap me-1"><i class="bi bi-folder2-open text-primary me-1"></i>Templates:</span>
+        <button class="preset-chip text-nowrap" data-scenario-id="clinical">
           🩺 Clinical PHI Encounter
         </button>
-        <button class="preset-chip" data-scenario-id="board_meeting">
+        <button class="preset-chip text-nowrap" data-scenario-id="board_meeting">
           💼 Executive Board Minutes
         </button>
-        <button class="preset-chip" data-scenario-id="financial_audit">
+        <button class="preset-chip text-nowrap" data-scenario-id="financial_audit">
           📊 Compute Expense Audit
         </button>
-        <button class="preset-chip" data-scenario-id="technical_rfc">
+        <button class="preset-chip text-nowrap" data-scenario-id="technical_rfc">
           🛠️ RFC-204 Spec
         </button>
       </div>
 
       <!-- Segmented Mode Picker -->
-      <div class="d-flex align-items-center gap-2">
-        <span class="small text-muted fw-semibold d-none d-sm-inline">Inference Mode:</span>
-        <div class="segmented-mode-picker" role="group" aria-label="Inference Mode">
+      <div class="d-flex align-items-center gap-2 w-100 w-lg-auto justify-content-between justify-content-lg-end">
+        <span class="small text-muted fw-semibold d-none d-xl-inline text-nowrap">Inference Mode:</span>
+        <div class="segmented-mode-picker w-100 w-lg-auto" role="group" aria-label="Inference Mode">
           <input type="radio" class="btn-check" name="inferenceMode" id="modeAuto" autocomplete="off" checked>
           <label class="segmented-mode-btn segmented-mode-btn-auto" for="modeAuto" title="Automatically prefers on-device Gemini Nano; falls back to Cloud Gemini 2.5 Flash when needed">
             <i class="bi bi-cpu"></i> Auto Hybrid
@@ -135,23 +135,23 @@
   </div>
 
   <!-- Main Studio Layout -->
-  <main class="container-fluid px-3 px-xl-4 py-3">
-    <div class="row g-3">
+  <main class="container-fluid px-3 px-xl-4 py-2 py-md-3">
+    <div class="row g-2 g-md-3">
 
       <!-- LEFT COLUMN: Document & Knowledge Studio -->
       <div class="col-lg-6">
-        <div class="studio-card h-100 d-flex flex-column p-3">
+        <div class="studio-card p-3">
           <!-- Document Header -->
           <div class="d-flex align-items-center justify-content-between pb-2 mb-2 border-bottom">
             <div class="d-flex align-items-center gap-2 flex-grow-1 me-2">
-              <span id="docCategoryBadge" class="badge bg-light text-secondary border rounded-pill px-2 py-1 small fw-semibold">Medical & Health</span>
+              <span id="docCategoryBadge" class="badge bg-light text-secondary border rounded-pill px-2 py-1 small fw-semibold text-nowrap">Medical & Health</span>
               <input type="text" id="docTitleInput" class="form-control form-control-sm document-title-input" value="Patient Consultation & Clinical Assessment" placeholder="Enter document title...">
             </div>
             <div class="d-flex gap-1">
               <button id="btnNewDoc" class="btn btn-sm btn-action-outline py-1 px-2" title="New Blank Document">
-                <i class="bi bi-file-earmark-plus"></i> New
+                <i class="bi bi-file-earmark-plus"></i> <span class="d-none d-sm-inline">New</span>
               </button>
-              <button id="btnSaveDoc" class="btn btn-sm btn-action-primary py-1 px-3" title="Save locally & sync to Cloud Firestore">
+              <button id="btnSaveDoc" class="btn btn-sm btn-action-primary py-1 px-2 px-sm-3" title="Save locally & sync to Cloud Firestore">
                 <i class="bi bi-cloud-arrow-up-fill me-1"></i> Save
               </button>
               <button id="btnExportDoc" class="btn btn-sm btn-action-outline py-1 px-2" title="Export as Markdown">
@@ -161,26 +161,27 @@
           </div>
 
           <!-- Editor Body -->
-          <div class="d-flex flex-column flex-grow-1">
+          <div>
             <div class="d-flex justify-content-between align-items-center mb-1 text-muted small">
-              <span><i class="bi bi-file-text me-1"></i>Confidential Document Editor</span>
+              <span class="d-none d-sm-inline"><i class="bi bi-file-text me-1"></i>Confidential Document Editor</span>
+              <span class="d-sm-none"><i class="bi bi-file-text me-1"></i>Editor</span>
               <div class="d-flex gap-2">
-                <span id="charCounter">0 characters</span>
+                <span id="charCounter">0 words</span>
                 <span>•</span>
                 <span id="tokenCounter" class="fw-semibold text-primary">~0 tokens</span>
               </div>
             </div>
 
-            <!-- Main Editor Area -->
-            <textarea id="docContentTextarea" class="form-control document-editor-textarea flex-grow-1 mb-2" rows="13" placeholder="Paste confidential notes, meeting minutes, clinical summaries, or technical documents here..."></textarea>
+            <!-- Main Editor Area (Balanced height) -->
+            <textarea id="docContentTextarea" class="form-control document-editor-textarea mb-2" rows="9" placeholder="Paste confidential notes, meeting minutes, clinical summaries, or technical documents here..."></textarea>
 
             <!-- Multimodal File / Image Attachment Preview -->
             <div id="imagePreviewCard" class="card bg-light border p-2 mb-2 d-none">
               <div class="d-flex align-items-center justify-content-between">
                 <div class="d-flex align-items-center gap-2">
-                  <img id="imagePreviewImg" src="" alt="Attached document preview" class="rounded border" style="max-height: 48px; max-width: 64px; object-fit: cover;">
+                  <img id="imagePreviewImg" src="" alt="Attached document preview" class="rounded border" style="max-height: 44px; max-width: 60px; object-fit: cover;">
                   <div>
-                    <span class="small fw-bold d-block text-truncate" style="max-width: 200px;">Attached Document Image</span>
+                    <span class="small fw-bold d-block text-truncate" style="max-width: 180px;">Attached Document Image</span>
                     <span class="badge bg-info-subtle text-info border border-info rounded-pill" style="font-size: 0.65rem;">Multimodal Vision Active</span>
                   </div>
                 </div>
@@ -194,32 +195,32 @@
             <div class="pt-2 border-top">
               <div class="d-flex align-items-center justify-content-between mb-2">
                 <span class="small fw-bold text-muted text-uppercase" style="letter-spacing: 0.04em;">
-                  <i class="bi bi-stars text-primary me-1"></i>Action Workflows
+                  <i class="bi bi-stars text-primary me-1"></i>Workflows
                 </span>
                 <span id="currentModePill" class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill py-1 px-2 small">
                   <i class="bi bi-cpu me-1"></i> Auto Hybrid (prefer_on_device)
                 </span>
               </div>
 
-              <div class="d-flex flex-wrap gap-2">
-                <button id="btnSummarize" class="btn btn-action-primary" title="Generate an executive summary with key findings (Ctrl + Enter)">
+              <div class="workflow-buttons-grid d-flex flex-wrap gap-2">
+                <button id="btnSummarize" class="btn btn-action-primary flex-fill" title="Generate an executive summary with key findings (Ctrl + Enter)">
                   <i class="bi bi-lightning-charge-fill me-1"></i> Summarize
                 </button>
 
-                <button id="btnRedact" class="btn btn-action-outline text-success" title="Identify and scrub PII/PHI with 100% on-device zero data egress">
-                  <i class="bi bi-shield-lock-fill me-1"></i> Scrub PII (Local)
+                <button id="btnRedact" class="btn btn-action-outline text-success flex-fill" title="Identify and scrub PII/PHI with 100% on-device zero data egress">
+                  <i class="bi bi-shield-lock-fill me-1"></i> Scrub PII
                 </button>
 
-                <button id="btnActionItems" class="btn btn-action-outline" title="Extract clear action items, assignments, and deadlines">
-                  <i class="bi bi-check2-square me-1"></i> Action Items
+                <button id="btnActionItems" class="btn btn-action-outline flex-fill" title="Extract clear action items, assignments, and deadlines">
+                  <i class="bi bi-check2-square me-1"></i> Actions
                 </button>
 
-                <button id="btnKeyPoints" class="btn btn-action-outline" title="Extract top 5 strategic takeaways">
+                <button id="btnKeyPoints" class="btn btn-action-outline flex-fill" title="Extract top 5 strategic takeaways">
                   <i class="bi bi-lightbulb-fill me-1"></i> Key Takeaways
                 </button>
 
                 <!-- Multimodal Image Trigger -->
-                <label class="btn btn-action-outline mb-0" for="imageFileInput" title="Attach an image, invoice, or scan for multimodal analysis">
+                <label class="btn btn-action-outline mb-0 btn-workflow-wide text-nowrap" for="imageFileInput" title="Attach an image, invoice, or scan for multimodal analysis">
                   <i class="bi bi-image me-1"></i> Attach Image
                   <input type="file" id="imageFileInput" accept="image/*" class="d-none">
                 </label>
@@ -231,24 +232,24 @@
 
       <!-- RIGHT COLUMN: Observability Telemetry, Results, & Chat -->
       <div class="col-lg-6">
-        <div class="d-flex flex-column gap-3 h-100">
+        <div class="d-flex flex-column gap-2 gap-md-3">
 
           <!-- Telemetry Observability Strip -->
           <div class="telemetry-strip-card telemetry-card">
             <div class="d-flex align-items-center justify-content-between mb-2">
-              <span class="small fw-bold text-uppercase text-light" style="letter-spacing: 0.06em;">
-                <i class="bi bi-activity text-info me-1"></i> Real-Time Execution & Privacy Observability
+              <span class="small fw-bold text-uppercase text-light" style="letter-spacing: 0.06em; font-size: 0.72rem;">
+                <i class="bi bi-activity text-info me-1"></i> Real-Time Hybrid Observability
               </span>
-              <span class="badge bg-dark border border-secondary text-secondary font-monospace" style="font-size: 0.68rem;">
+              <span class="badge bg-dark border border-secondary text-secondary font-monospace" style="font-size: 0.65rem;">
                 Firebase AI Logic SDK v12.5.0
               </span>
             </div>
 
             <div class="row g-2">
               <!-- Metric 1: Source Model -->
-              <div class="col-sm-6 col-md-3">
+              <div class="col-6 col-md-3">
                 <div class="telemetry-chip">
-                  <div class="telemetry-chip-label">Execution Source</div>
+                  <div class="telemetry-chip-label">Source</div>
                   <div id="telemetrySource" class="telemetry-chip-value text-success text-truncate">
                     <i class="bi bi-cpu-fill me-1"></i> Ready
                   </div>
@@ -256,7 +257,7 @@
               </div>
 
               <!-- Metric 2: Latency -->
-              <div class="col-sm-6 col-md-3">
+              <div class="col-6 col-md-3">
                 <div class="telemetry-chip">
                   <div class="telemetry-chip-label">Latency</div>
                   <div id="telemetryLatency" class="telemetry-chip-value text-warning">
@@ -266,7 +267,7 @@
               </div>
 
               <!-- Metric 3: Cost -->
-              <div class="col-sm-6 col-md-3">
+              <div class="col-6 col-md-3">
                 <div class="telemetry-chip">
                   <div class="telemetry-chip-label">Cloud Cost</div>
                   <div id="telemetryCost" class="telemetry-chip-value text-info">
@@ -276,9 +277,9 @@
               </div>
 
               <!-- Metric 4: Tokens -->
-              <div class="col-sm-6 col-md-3">
+              <div class="col-6 col-md-3">
                 <div class="telemetry-chip">
-                  <div class="telemetry-chip-label">Token Footprint</div>
+                  <div class="telemetry-chip-label">Tokens</div>
                   <div id="telemetryTokens" class="telemetry-chip-value text-light">
                     0 tokens
                   </div>
@@ -288,28 +289,28 @@
 
             <!-- Routing Reason Box -->
             <div class="telemetry-reason-box mt-2">
-              <span class="fw-bold text-white me-1"><i class="bi bi-info-circle me-1"></i>Decision Reason:</span>
+              <span class="fw-bold text-white me-1"><i class="bi bi-info-circle me-1"></i>Routing:</span>
               <span id="telemetryReason">Select a workflow or template to trigger hybrid inference.</span>
             </div>
           </div>
 
           <!-- Studio Tabs: Output vs Chat vs Notes -->
-          <div class="studio-card flex-grow-1 d-flex flex-column p-3">
+          <div class="studio-card p-3">
             <div class="d-flex align-items-center justify-content-between pb-2 mb-2 border-bottom">
               <ul class="nav nav-pills custom-studio-tabs" id="studioTabs" role="tablist">
                 <li class="nav-item" role="presentation">
                   <button class="nav-link active" id="tabOutput-btn" data-bs-toggle="pill" data-bs-target="#tabOutput" type="button" role="tab">
-                    <i class="bi bi-file-text-fill me-1"></i> Document Intelligence
+                    <i class="bi bi-file-text-fill me-1"></i> Output
                   </button>
                 </li>
                 <li class="nav-item" role="presentation">
                   <button class="nav-link" id="tabChat-btn" data-bs-toggle="pill" data-bs-target="#tabChat" type="button" role="tab">
-                    <i class="bi bi-chat-dots-fill me-1"></i> Interactive Chat
+                    <i class="bi bi-chat-dots-fill me-1"></i> Chat
                   </button>
                 </li>
                 <li class="nav-item" role="presentation">
                   <button class="nav-link" id="tabNotes-btn" data-bs-toggle="pill" data-bs-target="#tabNotes" type="button" role="tab">
-                    <i class="bi bi-cloud-check-fill me-1"></i> Firestore Sync
+                    <i class="bi bi-cloud-check-fill me-1"></i> Firestore
                   </button>
                 </li>
               </ul>
@@ -319,48 +320,48 @@
               </button>
             </div>
 
-            <div class="tab-content flex-grow-1 overflow-auto" id="studioTabsContent">
+            <div class="tab-content studio-tab-content" id="studioTabsContent">
 
               <!-- TAB 1: Document Intelligence Output -->
-              <div class="tab-pane fade show active h-100 d-flex flex-column" id="tabOutput" role="tabpanel">
+              <div class="tab-pane fade show active" id="tabOutput" role="tabpanel">
                 <!-- Loading State -->
-                <div id="outputLoading" class="text-center my-auto py-5 d-none">
-                  <div class="spinner-border text-primary mb-2" role="status"></div>
+                <div id="outputLoading" class="text-center py-4 d-none">
+                  <div class="spinner-border text-primary spinner-border-sm mb-2" role="status"></div>
                   <div class="text-muted small fw-medium">Executing Hybrid Inference via Firebase AI Logic...</div>
                 </div>
 
-                <!-- Empty State -->
-                <div id="outputPlaceholder" class="empty-state-card my-auto">
-                  <div class="empty-state-icon">
-                    <i class="bi bi-stars fs-3"></i>
+                <!-- Compact Non-Bloated Empty State -->
+                <div id="outputPlaceholder" class="empty-state-card">
+                  <div class="d-flex align-items-center justify-content-center gap-2 mb-1">
+                    <span class="empty-state-icon"><i class="bi bi-stars"></i></span>
+                    <span class="fw-bold small text-secondary">Document Intelligence Ready</span>
                   </div>
-                  <h6 class="fw-bold mb-1">Ready to analyze your document</h6>
-                  <p class="text-muted small mb-3" style="max-width: 360px; margin: 0 auto;">
-                    Select an action workflow on the left, or try one of these quick tasks:
+                  <p class="text-muted small mb-2" style="font-size: 0.76rem;">
+                    Click a workflow button above or use a quick starter below:
                   </p>
-                  <div class="d-flex flex-wrap justify-content-center gap-2">
+                  <div class="d-flex flex-wrap justify-content-center gap-1">
                     <button class="quick-starter-pill" onclick="document.getElementById('btnSummarize').click()">
-                      <i class="bi bi-lightning-charge text-primary"></i> Run Executive Summary
+                      <i class="bi bi-lightning-charge text-primary"></i> Summarize
                     </button>
                     <button class="quick-starter-pill" onclick="document.getElementById('btnRedact').click()">
-                      <i class="bi bi-shield-lock text-success"></i> Scrub Sensitive PII
+                      <i class="bi bi-shield-lock text-success"></i> Scrub PII
                     </button>
                     <button class="quick-starter-pill" onclick="document.getElementById('btnActionItems').click()">
-                      <i class="bi bi-check2-square text-info"></i> Extract Action Items
+                      <i class="bi bi-check2-square text-info"></i> Action Items
                     </button>
                   </div>
                 </div>
 
                 <!-- Formatted Rendered Output -->
-                <div id="outputContent" class="formatted-output-body d-none p-2"></div>
+                <div id="outputContent" class="formatted-output-body d-none p-1"></div>
               </div>
 
               <!-- TAB 2: Multi-Turn Document Chat -->
-              <div class="tab-pane fade h-100 d-flex flex-column" id="tabChat" role="tabpanel">
-                <div id="chatMessagesContainer" class="chat-thread-container flex-grow-1 mb-2">
-                  <div class="text-center text-muted small my-auto py-4">
-                    <i class="bi bi-chat-text fs-3 text-secondary d-block mb-1"></i>
-                    Ask questions, verify facts, or request edits based on the active document.
+              <div class="tab-pane fade" id="tabChat" role="tabpanel">
+                <div id="chatMessagesContainer" class="chat-thread-container mb-2">
+                  <div class="text-center text-muted small py-4">
+                    <i class="bi bi-chat-text fs-4 text-secondary d-block mb-1"></i>
+                    Ask questions, verify facts, or request edits based on the document.
                   </div>
                 </div>
 
@@ -373,14 +374,14 @@
               </div>
 
               <!-- TAB 3: Saved Notes & Firestore Sync -->
-              <div class="tab-pane fade h-100 d-flex flex-column" id="tabNotes" role="tabpanel">
+              <div class="tab-pane fade" id="tabNotes" role="tabpanel">
                 <div class="d-flex justify-content-between align-items-center mb-2 px-1">
-                  <span class="small text-muted fw-bold text-uppercase">Synchronized Knowledge Store</span>
-                  <span class="badge bg-success-subtle text-success border border-success rounded-pill px-2 py-1">
+                  <span class="small text-muted fw-bold text-uppercase" style="font-size: 0.72rem;">Synchronized Notes</span>
+                  <span class="badge bg-success-subtle text-success border border-success rounded-pill px-2 py-0.5" style="font-size: 0.7rem;">
                     <i class="bi bi-cloud-check-fill me-1"></i> Firestore Active
                   </span>
                 </div>
-                <div id="savedNotesContainer" class="list-group list-group-flush border rounded-3 overflow-auto flex-grow-1" style="max-height: 380px;">
+                <div id="savedNotesContainer" class="list-group list-group-flush border rounded-3 overflow-auto" style="max-height: 260px;">
                   <!-- Notes dynamically rendered here -->
                 </div>
               </div>

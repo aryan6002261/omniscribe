@@ -3,15 +3,15 @@
  */
 
 export const DEFAULT_CONFIG = {
-  // Demo/Placeholder configuration. Users can supply their real keys via the in-app Settings modal
+  // Live Firebase Project configuration from user
   firebase: {
-    apiKey: "AIzaSyDEMO-HYBRID-AI-HACKATHON-KEY",
-    authDomain: "hybrid-ai-logic-demo.firebaseapp.com",
-    projectId: "hybrid-ai-logic-demo",
-    storageBucket: "hybrid-ai-logic-demo.firebasestorage.app",
-    messagingSenderId: "109876543210",
-    appId: "1:109876543210:web:abcdef1234567890",
-    measurementId: "G-DEMO123456"
+    apiKey: "AIzaSyAjEVOl7vCsV7VjppDIRoS9wE3GfbfRzyQ",
+    authDomain: "omni-scribe-728.firebaseapp.com",
+    projectId: "omni-scribe-728",
+    storageBucket: "omni-scribe-728.firebasestorage.app",
+    messagingSenderId: "312327261695",
+    appId: "1:312327261695:web:56b141851badc916db6bca",
+    measurementId: "G-3JZ4LR1YB7"
   },
 
   appCheck: {

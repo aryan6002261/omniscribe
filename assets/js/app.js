@@ -32,6 +32,7 @@ class OmniScribeApp {
 
   async init() {
     this.cacheDomElements();
+    this.initTheme();
     this.bindEvents();
     this.loadSavedSettingsIntoModals();
     this.renderSavedNotesList();
@@ -116,6 +117,8 @@ class OmniScribeApp {
       userNameDisplay: document.getElementById("userNameDisplay"),
       btnSignInGoogle: document.getElementById("btnSignInGoogle"),
       btnSignOut: document.getElementById("btnSignOut"),
+      btnThemeToggle: document.getElementById("btnThemeToggle"),
+      themeToggleIcon: document.getElementById("themeToggleIcon"),
       modalFirebaseSettings: new bootstrap.Modal(document.getElementById("modalFirebaseSettings")),
       modalDiagnostics: new bootstrap.Modal(document.getElementById("modalDiagnostics")),
       diagResultsBody: document.getElementById("diagResultsBody"),
@@ -133,7 +136,75 @@ class OmniScribeApp {
     };
   }
 
+  // ==========================================
+  // THEME MANAGEMENT (Light / Dark Mode)
+  // ==========================================
+
+  initTheme() {
+    let currentTheme = "light";
+    try {
+      const stored = localStorage.getItem("omniscribe_theme");
+      if (stored) {
+        currentTheme = stored;
+      } else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        currentTheme = "dark";
+      }
+    } catch (e) {}
+
+    this.applyTheme(currentTheme, false);
+
+    // Listen to system theme changes if user has not set explicit preference
+    if (window.matchMedia) {
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+        try {
+          if (!localStorage.getItem("omniscribe_theme")) {
+            this.applyTheme(e.matches ? "dark" : "light", false);
+          }
+        } catch (err) {}
+      });
+    }
+  }
+
+  toggleTheme() {
+    const current = document.documentElement.getAttribute("data-bs-theme") || "light";
+    const newTheme = current === "dark" ? "light" : "dark";
+    this.applyTheme(newTheme, true);
+    this.showToast(`Switched to ${newTheme === "dark" ? "Dark" : "Light"} mode`);
+  }
+
+  applyTheme(theme, save = true) {
+    document.documentElement.setAttribute("data-bs-theme", theme);
+    if (save) {
+      try {
+        localStorage.setItem("omniscribe_theme", theme);
+      } catch (e) {}
+    }
+
+    if (this.dom.themeToggleIcon) {
+      if (theme === "dark") {
+        this.dom.themeToggleIcon.className = "bi bi-sun-fill text-warning fs-6";
+        if (this.dom.btnThemeToggle) {
+          this.dom.btnThemeToggle.title = "Switch to Light Mode";
+          this.dom.btnThemeToggle.classList.remove("btn-outline-secondary");
+          this.dom.btnThemeToggle.classList.add("btn-outline-warning");
+        }
+      } else {
+        this.dom.themeToggleIcon.className = "bi bi-moon-stars-fill text-secondary fs-6";
+        if (this.dom.btnThemeToggle) {
+          this.dom.btnThemeToggle.title = "Switch to Dark Mode";
+          this.dom.btnThemeToggle.classList.remove("btn-outline-warning");
+          this.dom.btnThemeToggle.classList.add("btn-outline-secondary");
+        }
+      }
+    }
+  }
+
   bindEvents() {
+    // Light / Dark Theme toggle
+    if (this.dom.btnThemeToggle) {
+      this.dom.btnThemeToggle.addEventListener("click", () => this.toggleTheme());
+    }
+
     // Mode toggles
     this.dom.modeAuto.addEventListener("change", () => this.setInferenceMode("auto"));
     this.dom.modeLocal.addEventListener("change", () => this.setInferenceMode("local"));

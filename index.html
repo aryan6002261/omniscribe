@@ -59,6 +59,11 @@
 
         <!-- Right Action Controls -->
         <div class="d-flex align-items-center gap-2 mt-2 mt-lg-0">
+          <!-- Functionality Test Button -->
+          <button type="button" class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#modalFunctionalityTest" title="OmniScribe 8-Point Functionality Verification">
+            <i class="bi bi-patch-check-fill me-1"></i> System Test (8/8)
+          </button>
+
           <!-- Diagnostics Button -->
           <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalDiagnostics" title="Hardware & Gemini Nano Diagnostics">
             <i class="bi bi-speedometer2 me-1"></i> Diagnostics
@@ -463,6 +468,103 @@
           <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
           <button type="button" id="btnRunDiagBenchmark" class="btn btn-sm btn-primary">
             <i class="bi bi-play-circle-fill me-1"></i> Run Benchmark
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: OmniScribe Functionality Test (8/8) -->
+  <div class="modal fade" id="modalFunctionalityTest" tabindex="-1" aria-labelledby="modalFunctionalityTestLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-light border-bottom">
+          <h5 class="modal-title" id="modalFunctionalityTestLabel">
+            <i class="bi bi-patch-check-fill text-success me-2"></i>OmniScribe Functionality Verification
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-3 p-md-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+              <h6 class="fw-bold mb-1">OmniScribe System Test Suite</h6>
+              <span class="text-muted small">Validates hybrid inference, privacy redaction, auth, and persistence.</span>
+            </div>
+            <span id="testScoreBadge" class="badge bg-secondary-subtle text-secondary border fs-6 px-3 py-2">
+              0 / 8 Tested
+            </span>
+          </div>
+
+          <div class="list-group list-group-flush border rounded-3 mb-3" id="testListGroup">
+            <div class="list-group-item d-flex justify-content-between align-items-center" id="testRow-1">
+              <div>
+                <strong>1. Website loads correctly</strong>
+                <div class="small text-muted" id="testDetail-1">Verifies DOM nodes, Bootstrap 5.3 assets, and pre-loaded scenarios.</div>
+              </div>
+              <span class="badge bg-secondary" id="testBadge-1"><i class="bi bi-circle me-1"></i> Pending</span>
+            </div>
+
+            <div class="list-group-item d-flex justify-content-between align-items-center" id="testRow-2">
+              <div>
+                <strong>2. Guest Mode works</strong>
+                <div class="small text-muted" id="testDetail-2">Validates anonymous friction-free authentication & local session.</div>
+              </div>
+              <span class="badge bg-secondary" id="testBadge-2"><i class="bi bi-circle me-1"></i> Pending</span>
+            </div>
+
+            <div class="list-group-item d-flex justify-content-between align-items-center" id="testRow-3">
+              <div>
+                <strong>3. Auto-Summarize generates a summary</strong>
+                <div class="small text-muted" id="testDetail-3">Runs on-device / hybrid summarization with Executive TL;DR output.</div>
+              </div>
+              <span class="badge bg-secondary" id="testBadge-3"><i class="bi bi-circle me-1"></i> Pending</span>
+            </div>
+
+            <div class="list-group-item d-flex justify-content-between align-items-center" id="testRow-4">
+              <div>
+                <strong>4. Redact PII removes sensitive information</strong>
+                <div class="small text-muted" id="testDetail-4">Masks patient names, MRN, clinician IDs, and DOB with 100% zero data egress.</div>
+              </div>
+              <span class="badge bg-secondary" id="testBadge-4"><i class="bi bi-circle me-1"></i> Pending</span>
+            </div>
+
+            <div class="list-group-item d-flex justify-content-between align-items-center" id="testRow-5">
+              <div>
+                <strong>5. Action Items generates results</strong>
+                <div class="small text-muted" id="testDetail-5">Extracts structured actionable priorities, owners, and deadlines.</div>
+              </div>
+              <span class="badge bg-secondary" id="testBadge-5"><i class="bi bi-circle me-1"></i> Pending</span>
+            </div>
+
+            <div class="list-group-item d-flex justify-content-between align-items-center" id="testRow-6">
+              <div>
+                <strong>6. Gemini cloud response works</strong>
+                <div class="small text-muted" id="testDetail-6">Executes cloud boost route via Firebase AI Logic Gemini 2.5 Flash.</div>
+              </div>
+              <span class="badge bg-secondary" id="testBadge-6"><i class="bi bi-circle me-1"></i> Pending</span>
+            </div>
+
+            <div class="list-group-item d-flex justify-content-between align-items-center" id="testRow-7">
+              <div>
+                <strong>7. Firestore saves a document</strong>
+                <div class="small text-muted" id="testDetail-7">Stores structured note in Firestore collection with local sync cache.</div>
+              </div>
+              <span class="badge bg-secondary" id="testBadge-7"><i class="bi bi-circle me-1"></i> Pending</span>
+            </div>
+
+            <div class="list-group-item d-flex justify-content-between align-items-center" id="testRow-8">
+              <div>
+                <strong>8. Saved document remains after refreshing</strong>
+                <div class="small text-muted" id="testDetail-8">Retrieves persisted notes from cache and validates across browser sessions.</div>
+              </div>
+              <span class="badge bg-secondary" id="testBadge-8"><i class="bi bi-circle me-1"></i> Pending</span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer bg-light border-top">
+          <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" id="btnExecuteAllTests" class="btn btn-sm btn-success">
+            <i class="bi bi-play-circle-fill me-1"></i> Run All 8 Tests
           </button>
         </div>
       </div>

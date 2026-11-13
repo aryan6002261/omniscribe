@@ -17,7 +17,7 @@ export const DEFAULT_CONFIG = {
   appCheck: {
     debugToken: "DEMO-DEBUG-TOKEN-FIREBASE-AI-LOGIC-2026",
     useDebugToken: true,
-    reCaptchaEnterpriseSiteKey: ""
+    reCaptchaEnterpriseSiteKey: "6Ld62R0uAAAAAEE634vB9Akj99k4oxAtzrYDdpTf"
   },
 
   ai: {

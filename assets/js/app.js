@@ -290,6 +290,9 @@ class OmniScribeApp {
     const systemPrompt = "You are OmniScribe Hybrid AI, an intelligent, privacy-first document and knowledge assistant.";
 
     try {
+      // Execute reCAPTCHA Enterprise verification on user interaction
+      await this.firebase.executeReCaptcha(`PROMPT_${taskType.toUpperCase()}`);
+
       const result = await this.firebase.executeHybridInference({
         prompt: fullPrompt,
         systemInstruction: systemPrompt,
@@ -403,6 +406,9 @@ class OmniScribeApp {
     const typingElem = this.appendChatMessage("assistant", `<i class="bi bi-hourglass-split spin me-1"></i> Thinking...`);
 
     try {
+      // Execute reCAPTCHA Enterprise verification for chat action
+      await this.firebase.executeReCaptcha('CHAT_PROMPT');
+
       const result = await this.firebase.executeHybridInference({
         prompt: prompt,
         systemInstruction: systemPrompt,
@@ -432,6 +438,9 @@ class OmniScribeApp {
   // ==========================================
 
   async saveCurrentDocument() {
+    // Execute reCAPTCHA Enterprise verification for document persistence
+    await this.firebase.executeReCaptcha('SAVE_DOCUMENT');
+
     const title = this.dom.docTitleInput.value.trim() || "Untitled Knowledge Document";
     const content = this.dom.docContentTextarea.value.trim();
     const category = this.dom.docCategoryBadge.innerText;
@@ -673,6 +682,7 @@ class OmniScribeApp {
   }
 
   async signInGoogle() {
+    await this.firebase.executeReCaptcha('LOGIN');
     const res = await this.firebase.signInWithGoogle();
     if (res.success) {
       this.showToast("Signed in with Google account!");

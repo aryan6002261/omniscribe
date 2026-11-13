@@ -147,8 +147,14 @@ class OmniScribeApp {
       });
     });
 
-    // Editor inputs
+    // Editor inputs & keyboard shortcuts (Ctrl+Enter to summarize)
     this.dom.docContentTextarea.addEventListener("input", () => this.updateCounters());
+    this.dom.docContentTextarea.addEventListener("keydown", (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+        e.preventDefault();
+        this.dom.btnSummarize.click();
+      }
+    });
 
     // GenAI Actions
     this.dom.btnSummarize.addEventListener("click", () => this.runGenAITask("summary", "Summarize this document with an executive TL;DR, key findings, and operational recommendations."));
@@ -195,16 +201,16 @@ class OmniScribeApp {
   setInferenceMode(mode) {
     this.currentMode = mode;
     if (mode === "auto") {
-      this.dom.modePill.className = "badge bg-primary text-white";
-      this.dom.modePill.innerHTML = `<i class="bi bi-cpu-fill me-1"></i> Auto Hybrid (PREFER_ON_DEVICE)`;
+      this.dom.modePill.className = "badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill py-1 px-2 small";
+      this.dom.modePill.innerHTML = `<i class="bi bi-cpu me-1"></i> Auto Hybrid (prefer_on_device)`;
       this.dom.privacyBadge.innerHTML = `<i class="bi bi-shield-check text-primary me-1"></i> Smart Hybrid Routing`;
     } else if (mode === "local") {
-      this.dom.modePill.className = "badge bg-success text-white";
-      this.dom.modePill.innerHTML = `<i class="bi bi-shield-lock-fill me-1"></i> Strict On-Device (Zero Egress)`;
+      this.dom.modePill.className = "badge bg-success-subtle text-success border border-success-subtle rounded-pill py-1 px-2 small";
+      this.dom.modePill.innerHTML = `<i class="bi bi-shield-lock-fill me-1"></i> Strict Local (only_on_device)`;
       this.dom.privacyBadge.innerHTML = `<i class="bi bi-shield-lock-fill text-success me-1"></i> 100% Zero-Data-Egress`;
     } else {
-      this.dom.modePill.className = "badge bg-info text-dark";
-      this.dom.modePill.innerHTML = `<i class="bi bi-cloud-arrow-up-fill me-1"></i> Cloud Boost (Gemini 2.5 Flash)`;
+      this.dom.modePill.className = "badge bg-info-subtle text-dark border border-info-subtle rounded-pill py-1 px-2 small";
+      this.dom.modePill.innerHTML = `<i class="bi bi-cloud-arrow-up-fill me-1"></i> Cloud Boost (only_in_cloud)`;
       this.dom.privacyBadge.innerHTML = `<i class="bi bi-cloud-check text-info me-1"></i> App Check Verified Cloud`;
     }
     this.showToast(`Switched inference mode to: ${this.dom.modePill.innerText}`);
@@ -239,8 +245,10 @@ class OmniScribeApp {
   updateCounters() {
     const text = this.dom.docContentTextarea.value || "";
     const chars = text.length;
+    const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+    const readingTime = Math.max(1, Math.ceil(words / 200));
     const estimatedTokens = Math.round(chars / 4);
-    this.dom.charCounter.innerText = `${chars.toLocaleString()} characters`;
+    this.dom.charCounter.innerText = `${words.toLocaleString()} words • ~${readingTime} min read`;
     this.dom.tokenCounter.innerText = `~${estimatedTokens.toLocaleString()} tokens`;
   }
 
@@ -569,6 +577,16 @@ class OmniScribeApp {
     const text = this.dom.outputContent.innerText;
     if (!text) return;
     navigator.clipboard.writeText(text);
+    const btn = this.dom.btnCopyOutput;
+    if (btn) {
+      const originalHtml = btn.innerHTML;
+      btn.className = "btn btn-sm btn-success py-1 px-2";
+      btn.innerHTML = `<i class="bi bi-check2 me-1"></i> Copied!`;
+      setTimeout(() => {
+        btn.className = "btn btn-sm btn-action-outline py-1 px-2";
+        btn.innerHTML = originalHtml;
+      }, 2000);
+    }
     this.showToast("Output copied to clipboard!");
   }
 

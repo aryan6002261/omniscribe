@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OmniScribe Hybrid AI | Firebase AI Logic & Gemini Nano Studio</title>
-  <meta name="description" content="Next-gen privacy-first hybrid generative AI application powered by Firebase AI Logic and Chrome Gemini Nano 4. Built for the #BuildHybridAI Hackathon.">
+  <title>OmniScribe | Privacy-First Hybrid AI Document Studio</title>
+  <meta name="description" content="Next-gen privacy-first hybrid generative AI application powered by Firebase AI Logic and Chrome Gemini Nano 4. Built for the Google #BuildHybridAI 2026 Hackathon.">
   
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
@@ -15,44 +15,44 @@
   <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   
-  <!-- Custom Styles -->
+  <!-- Custom Modern SaaS Stylesheet -->
   <link rel="stylesheet" href="assets/css/style.css">
 
   <!-- Google reCAPTCHA Enterprise for Firebase App Check -->
   <script src="https://www.google.com/recaptcha/enterprise.js?render=6Ld62R0uAAAAAEE634vB9Akj99k4oxAtzrYDdpTf" async defer></script>
 </head>
-<body class="bg-body-tertiary">
+<body>
 
   <!-- Top Navigation Bar -->
-  <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top py-2 shadow-sm">
-    <div class="container-fluid px-3 px-lg-4">
+  <nav class="navbar navbar-expand-lg navbar-clean sticky-top py-2 shadow-xs">
+    <div class="container-fluid px-3 px-xl-4">
       <!-- Brand Logo & Title -->
-      <a class="navbar-brand d-flex align-items-center me-3" href="#">
-        <img src="assets/images/logo.svg" alt="OmniScribe Logo" width="36" height="36" class="me-2">
+      <a class="brand-wrapper" href="#">
+        <img src="assets/images/logo.svg" alt="OmniScribe Logo" class="brand-icon">
         <div>
-          <span class="brand-title fs-5">OmniScribe <span class="badge bg-primary text-white fs-6 py-0 px-2 align-middle ms-1">Hybrid AI</span></span>
-          <div class="small text-muted" style="font-size: 0.72rem; line-height: 1;">Firebase AI Logic • Gemini Nano 4</div>
+          <div class="brand-name">OmniScribe <span class="badge bg-indigo-subtle text-primary border border-primary-subtle rounded-pill py-0 px-2 fw-bold ms-1" style="font-size: 0.68rem; vertical-align: middle;">HYBRID AI</span></div>
+          <div class="brand-tagline">Firebase AI Logic • Chrome Gemini Nano 4</div>
         </div>
       </a>
 
       <!-- Navbar Toggle for Mobile -->
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
-        <span class="navbar-toggler-icon"></span>
+      <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+        <i class="bi bi-list fs-4"></i>
       </button>
 
       <div class="collapse navbar-collapse" id="navbarMain">
-        <!-- Center Badges: System Status -->
+        <!-- Center Status Chips -->
         <div class="d-flex flex-wrap align-items-center gap-2 my-2 my-lg-0 mx-lg-auto">
-          <span id="nanoBadge" class="badge bg-secondary-subtle text-secondary border border-secondary px-2 py-1">
-            <i class="bi bi-hourglass-split me-1"></i> Gemini Nano: Probing...
+          <span id="nanoBadge" class="status-indicator-chip" title="Hardware acceleration and local model status">
+            <span class="status-dot online"></span> Local model: Probing...
           </span>
-          <span id="cloudBadge" class="badge bg-secondary-subtle text-secondary border border-secondary px-2 py-1">
-            <i class="bi bi-hourglass-split me-1"></i> Firebase AI Logic: Connecting...
+          <span id="cloudBadge" class="status-indicator-chip" title="Firebase AI Logic backend connectivity">
+            <span class="status-dot cloud"></span> Firebase AI Logic: Ready
           </span>
-          <span id="appCheckBadge" class="badge bg-success-subtle text-success border border-success px-2 py-1">
-            <i class="bi bi-shield-check me-1"></i> App Check: Active
+          <span id="appCheckBadge" class="status-indicator-chip" title="Google reCAPTCHA Enterprise security verification">
+            <i class="bi bi-shield-check text-success me-1"></i> App Check Active
           </span>
-          <span id="privacyBadge" class="badge bg-light text-dark border px-2 py-1">
+          <span id="privacyBadge" class="status-indicator-chip" title="Data privacy and egress status">
             <i class="bi bi-shield-lock-fill text-success me-1"></i> Smart Hybrid Routing
           </span>
         </div>
@@ -60,29 +60,29 @@
         <!-- Right Action Controls -->
         <div class="d-flex align-items-center gap-2 mt-2 mt-lg-0">
           <!-- Functionality Test Button -->
-          <button type="button" class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#modalFunctionalityTest" title="OmniScribe 8-Point Functionality Verification">
+          <button type="button" class="btn btn-sm btn-outline-success rounded-pill px-3 fw-semibold" data-bs-toggle="modal" data-bs-target="#modalFunctionalityTest" title="Run the full 8-point system acceptance verification">
             <i class="bi bi-patch-check-fill me-1"></i> System Test (8/8)
           </button>
 
           <!-- Diagnostics Button -->
-          <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalDiagnostics" title="Hardware & Gemini Nano Diagnostics">
+          <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3 fw-medium" data-bs-toggle="modal" data-bs-target="#modalDiagnostics" title="Inspect Chrome Prompt API & measure comparative latency">
             <i class="bi bi-speedometer2 me-1"></i> Diagnostics
           </button>
 
           <!-- Settings Button -->
-          <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalFirebaseSettings" title="Firebase Configuration & Keys">
+          <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3 fw-medium" data-bs-toggle="modal" data-bs-target="#modalFirebaseSettings" title="Configure Firebase project keys and thresholds">
             <i class="bi bi-gear-fill me-1"></i> Config
           </button>
 
           <!-- User Display & Auth -->
           <div class="border-start ps-2 ms-1 d-flex align-items-center gap-1">
-            <span id="userNameDisplay" class="small text-muted text-truncate" style="max-width: 140px;">
+            <span id="userNameDisplay" class="small fw-semibold text-secondary text-truncate" style="max-width: 140px;">
               <i class="bi bi-person-fill me-1"></i> Guest Mode
             </span>
-            <button id="btnSignInGoogle" class="btn btn-sm btn-outline-dark" title="Sign in with Google">
+            <button id="btnSignInGoogle" class="btn btn-sm btn-outline-dark rounded-circle p-1" style="width: 28px; height: 28px;" title="Sign in with Google">
               <i class="bi bi-google"></i>
             </button>
-            <button id="btnSignOut" class="btn btn-sm btn-outline-danger d-none" title="Sign out">
+            <button id="btnSignOut" class="btn btn-sm btn-outline-danger rounded-circle p-1 d-none" style="width: 28px; height: 28px;" title="Sign out">
               <i class="bi bi-box-arrow-right"></i>
             </button>
           </div>
@@ -91,133 +91,136 @@
     </div>
   </nav>
 
-  <!-- Sub-header: Quick Scenarios & Mode Bar -->
+  <!-- Sub-Header: Mode Selector & Starter Templates -->
   <div class="bg-white border-bottom py-2 shadow-xs">
-    <div class="container-fluid px-3 px-lg-4 d-flex flex-wrap align-items-center justify-content-between gap-2">
-      <!-- Quick Load Sample Scenarios -->
+    <div class="container-fluid px-3 px-xl-4 d-flex flex-wrap align-items-center justify-content-between gap-2">
+      <!-- Preset Scenarios -->
       <div class="d-flex align-items-center flex-wrap gap-1">
-        <span class="small fw-semibold text-muted me-1"><i class="bi bi-lightning-charge-fill text-warning me-1"></i>Demo Scenarios:</span>
-        <button class="btn btn-sm btn-outline-secondary scenario-btn py-0 px-2" data-scenario-id="clinical">
-          🩺 Clinical PHI Note
+        <span class="small fw-semibold text-muted me-1"><i class="bi bi-folder2-open text-primary me-1"></i>Starter Templates:</span>
+        <button class="preset-chip" data-scenario-id="clinical">
+          🩺 Clinical PHI Encounter
         </button>
-        <button class="btn btn-sm btn-outline-secondary scenario-btn py-0 px-2" data-scenario-id="board_meeting">
-          💼 Project Titan Minutes
+        <button class="preset-chip" data-scenario-id="board_meeting">
+          💼 Executive Board Minutes
         </button>
-        <button class="btn btn-sm btn-outline-secondary scenario-btn py-0 px-2" data-scenario-id="financial_audit">
-          📊 Compute Cost Audit
+        <button class="preset-chip" data-scenario-id="financial_audit">
+          📊 Compute Expense Audit
         </button>
-        <button class="btn btn-sm btn-outline-secondary scenario-btn py-0 px-2" data-scenario-id="technical_rfc">
+        <button class="preset-chip" data-scenario-id="technical_rfc">
           🛠️ RFC-204 Spec
         </button>
       </div>
 
-      <!-- Inference Mode Selector -->
+      <!-- Segmented Mode Picker -->
       <div class="d-flex align-items-center gap-2">
-        <span class="small text-muted fw-semibold">Inference Mode:</span>
-        <div class="btn-group btn-group-sm" role="group" aria-label="Inference Mode">
+        <span class="small text-muted fw-semibold d-none d-sm-inline">Inference Mode:</span>
+        <div class="segmented-mode-picker" role="group" aria-label="Inference Mode">
           <input type="radio" class="btn-check" name="inferenceMode" id="modeAuto" autocomplete="off" checked>
-          <label class="btn btn-outline-primary" for="modeAuto" title="Automatically runs on-device if available, falls back to cloud">
-            <i class="bi bi-cpu me-1"></i> Auto Hybrid
+          <label class="segmented-mode-btn segmented-mode-btn-auto" for="modeAuto" title="Automatically prefers on-device Gemini Nano; falls back to Cloud Gemini 2.5 Flash when needed">
+            <i class="bi bi-cpu"></i> Auto Hybrid
           </label>
 
           <input type="radio" class="btn-check" name="inferenceMode" id="modeLocal" autocomplete="off">
-          <label class="btn btn-outline-success" for="modeLocal" title="100% on-device zero data egress (Gemini Nano)">
-            <i class="bi bi-shield-lock me-1"></i> Strict Local
+          <label class="segmented-mode-btn segmented-mode-btn-local" for="modeLocal" title="Strictly on-device. Zero data egress. Never sends content to the cloud.">
+            <i class="bi bi-shield-lock"></i> Strict Local
           </label>
 
           <input type="radio" class="btn-check" name="inferenceMode" id="modeCloud" autocomplete="off">
-          <label class="btn btn-outline-info text-dark" for="modeCloud" title="Firebase AI Logic cloud model (Gemini 2.5 Flash)">
-            <i class="bi bi-cloud-arrow-up me-1"></i> Cloud Boost
+          <label class="segmented-mode-btn segmented-mode-btn-cloud" for="modeCloud" title="Uses Google Cloud Gemini 2.5 Flash for deep context & multimodal tasks">
+            <i class="bi bi-cloud-arrow-up"></i> Cloud Boost
           </label>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Main Container -->
-  <main class="container-fluid px-3 px-lg-4 py-3">
+  <!-- Main Studio Layout -->
+  <main class="container-fluid px-3 px-xl-4 py-3">
     <div class="row g-3">
 
       <!-- LEFT COLUMN: Document & Knowledge Studio -->
       <div class="col-lg-6">
-        <div class="card card-glass h-100 d-flex flex-column">
+        <div class="studio-card h-100 d-flex flex-column p-3">
           <!-- Document Header -->
-          <div class="card-header bg-transparent border-bottom d-flex align-items-center justify-content-between py-2">
+          <div class="d-flex align-items-center justify-content-between pb-2 mb-2 border-bottom">
             <div class="d-flex align-items-center gap-2 flex-grow-1 me-2">
-              <span id="docCategoryBadge" class="badge bg-secondary-subtle text-secondary border">Medical & Health</span>
-              <input type="text" id="docTitleInput" class="form-control form-control-sm fw-bold border-0 bg-transparent p-0" value="Patient Consultation & Clinical Assessment" placeholder="Enter document title...">
+              <span id="docCategoryBadge" class="badge bg-light text-secondary border rounded-pill px-2 py-1 small fw-semibold">Medical & Health</span>
+              <input type="text" id="docTitleInput" class="form-control form-control-sm document-title-input" value="Patient Consultation & Clinical Assessment" placeholder="Enter document title...">
             </div>
             <div class="d-flex gap-1">
-              <button id="btnNewDoc" class="btn btn-sm btn-outline-secondary" title="New Document">
+              <button id="btnNewDoc" class="btn btn-sm btn-action-outline py-1 px-2" title="New Blank Document">
                 <i class="bi bi-file-earmark-plus"></i> New
               </button>
-              <button id="btnSaveDoc" class="btn btn-sm btn-primary" title="Save & Sync to Firestore">
+              <button id="btnSaveDoc" class="btn btn-sm btn-action-primary py-1 px-3" title="Save locally & sync to Cloud Firestore">
                 <i class="bi bi-cloud-arrow-up-fill me-1"></i> Save
               </button>
-              <button id="btnExportDoc" class="btn btn-sm btn-outline-secondary" title="Export as Markdown">
+              <button id="btnExportDoc" class="btn btn-sm btn-action-outline py-1 px-2" title="Export as Markdown">
                 <i class="bi bi-download"></i>
               </button>
             </div>
           </div>
 
-          <!-- Document Editor Body -->
-          <div class="card-body p-3 d-flex flex-column flex-grow-1">
-            <div class="mb-2 d-flex justify-content-between align-items-center">
-              <span class="small text-muted"><i class="bi bi-pencil-square me-1"></i>Confidential Content Editor</span>
-              <div class="small text-muted d-flex gap-3">
+          <!-- Editor Body -->
+          <div class="d-flex flex-column flex-grow-1">
+            <div class="d-flex justify-content-between align-items-center mb-1 text-muted small">
+              <span><i class="bi bi-file-text me-1"></i>Confidential Document Editor</span>
+              <div class="d-flex gap-2">
                 <span id="charCounter">0 characters</span>
+                <span>•</span>
                 <span id="tokenCounter" class="fw-semibold text-primary">~0 tokens</span>
               </div>
             </div>
 
-            <!-- Content Textarea -->
-            <textarea id="docContentTextarea" class="form-control flex-grow-1 font-monospace small mb-3" rows="14" placeholder="Paste confidential notes, meeting minutes, clinical records, or technical specifications here..."></textarea>
+            <!-- Main Editor Area -->
+            <textarea id="docContentTextarea" class="form-control document-editor-textarea flex-grow-1 mb-2" rows="13" placeholder="Paste confidential notes, meeting minutes, clinical summaries, or technical documents here..."></textarea>
 
-            <!-- Multimodal File / Image Attachment Area -->
-            <div id="imagePreviewCard" class="card bg-light border p-2 mb-3 d-none">
+            <!-- Multimodal File / Image Attachment Preview -->
+            <div id="imagePreviewCard" class="card bg-light border p-2 mb-2 d-none">
               <div class="d-flex align-items-center justify-content-between">
                 <div class="d-flex align-items-center gap-2">
                   <img id="imagePreviewImg" src="" alt="Attached document preview" class="rounded border" style="max-height: 48px; max-width: 64px; object-fit: cover;">
                   <div>
                     <span class="small fw-bold d-block text-truncate" style="max-width: 200px;">Attached Document Image</span>
-                    <span class="badge bg-info text-dark" style="font-size: 0.65rem;">Multimodal Ready</span>
+                    <span class="badge bg-info-subtle text-info border border-info rounded-pill" style="font-size: 0.65rem;">Multimodal Vision Active</span>
                   </div>
                 </div>
-                <button id="btnRemoveImage" class="btn btn-sm btn-outline-danger py-0 px-2" title="Remove image">
+                <button id="btnRemoveImage" class="btn btn-sm btn-outline-danger py-0 px-2 rounded-circle" title="Remove image">
                   <i class="bi bi-x"></i>
                 </button>
               </div>
             </div>
 
-            <!-- Action Toolbar (Gen AI Workflows) -->
-            <div class="border-top pt-3">
-              <div class="small fw-semibold text-muted mb-2 d-flex align-items-center justify-content-between">
-                <span><i class="bi bi-stars text-primary me-1"></i>Hybrid AI Workflows</span>
-                <span id="currentModePill" class="badge bg-primary text-white">
-                  <i class="bi bi-cpu-fill me-1"></i> Auto Hybrid (PREFER_ON_DEVICE)
+            <!-- Action Workflows Bar -->
+            <div class="pt-2 border-top">
+              <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="small fw-bold text-muted text-uppercase" style="letter-spacing: 0.04em;">
+                  <i class="bi bi-stars text-primary me-1"></i>Action Workflows
+                </span>
+                <span id="currentModePill" class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill py-1 px-2 small">
+                  <i class="bi bi-cpu me-1"></i> Auto Hybrid (prefer_on_device)
                 </span>
               </div>
-              
+
               <div class="d-flex flex-wrap gap-2">
-                <button id="btnSummarize" class="btn btn-sm btn-primary">
-                  <i class="bi bi-lightning-charge-fill me-1"></i> Auto-Summarize
+                <button id="btnSummarize" class="btn btn-action-primary" title="Generate an executive summary with key findings (Ctrl + Enter)">
+                  <i class="bi bi-lightning-charge-fill me-1"></i> Summarize
                 </button>
 
-                <button id="btnRedact" class="btn btn-sm btn-outline-success">
-                  <i class="bi bi-shield-lock-fill me-1"></i> Redact PII (Local)
+                <button id="btnRedact" class="btn btn-action-outline text-success" title="Identify and scrub PII/PHI with 100% on-device zero data egress">
+                  <i class="bi bi-shield-lock-fill me-1"></i> Scrub PII (Local)
                 </button>
 
-                <button id="btnActionItems" class="btn btn-sm btn-outline-secondary">
+                <button id="btnActionItems" class="btn btn-action-outline" title="Extract clear action items, assignments, and deadlines">
                   <i class="bi bi-check2-square me-1"></i> Action Items
                 </button>
 
-                <button id="btnKeyPoints" class="btn btn-sm btn-outline-secondary">
+                <button id="btnKeyPoints" class="btn btn-action-outline" title="Extract top 5 strategic takeaways">
                   <i class="bi bi-lightbulb-fill me-1"></i> Key Takeaways
                 </button>
 
                 <!-- Multimodal Image Trigger -->
-                <label class="btn btn-sm btn-outline-info text-dark mb-0" for="imageFileInput" title="Attach Document Image / Receipt / Scan for Multimodal Analysis">
-                  <i class="bi bi-image-fill me-1"></i> Attach Image
+                <label class="btn btn-action-outline mb-0" for="imageFileInput" title="Attach an image, invoice, or scan for multimodal analysis">
+                  <i class="bi bi-image me-1"></i> Attach Image
                   <input type="file" id="imageFileInput" accept="image/*" class="d-none">
                 </label>
               </div>
@@ -226,27 +229,27 @@
         </div>
       </div>
 
-      <!-- RIGHT COLUMN: Hybrid Intelligence Output, Chat, & Telemetry -->
+      <!-- RIGHT COLUMN: Observability Telemetry, Results, & Chat -->
       <div class="col-lg-6">
         <div class="d-flex flex-column gap-3 h-100">
 
-          <!-- Telemetry Dashboard Strip -->
-          <div class="telemetry-card p-3 shadow-sm">
+          <!-- Telemetry Observability Strip -->
+          <div class="telemetry-strip-card telemetry-card">
             <div class="d-flex align-items-center justify-content-between mb-2">
-              <span class="small fw-bold text-uppercase text-light">
-                <i class="bi bi-graph-up-arrow text-info me-1"></i> Hybrid Inference Telemetry
+              <span class="small fw-bold text-uppercase text-light" style="letter-spacing: 0.06em;">
+                <i class="bi bi-activity text-info me-1"></i> Real-Time Execution & Privacy Observability
               </span>
-              <span class="badge bg-secondary text-light font-monospace" style="font-size: 0.7rem;">
-                Firebase AI Logic SDK v11
+              <span class="badge bg-dark border border-secondary text-secondary font-monospace" style="font-size: 0.68rem;">
+                Firebase AI Logic SDK v12.5.0
               </span>
             </div>
 
             <div class="row g-2">
               <!-- Metric 1: Source Model -->
               <div class="col-sm-6 col-md-3">
-                <div class="telemetry-metric-box">
-                  <div class="telemetry-label">Execution Engine</div>
-                  <div id="telemetrySource" class="telemetry-value text-success text-truncate">
+                <div class="telemetry-chip">
+                  <div class="telemetry-chip-label">Execution Source</div>
+                  <div id="telemetrySource" class="telemetry-chip-value text-success text-truncate">
                     <i class="bi bi-cpu-fill me-1"></i> Ready
                   </div>
                 </div>
@@ -254,106 +257,116 @@
 
               <!-- Metric 2: Latency -->
               <div class="col-sm-6 col-md-3">
-                <div class="telemetry-metric-box">
-                  <div class="telemetry-label">Latency (ms)</div>
-                  <div id="telemetryLatency" class="telemetry-value text-warning">
+                <div class="telemetry-chip">
+                  <div class="telemetry-chip-label">Latency</div>
+                  <div id="telemetryLatency" class="telemetry-chip-value text-warning">
                     -- ms
                   </div>
                 </div>
               </div>
 
-              <!-- Metric 3: Cost & Savings -->
+              <!-- Metric 3: Cost -->
               <div class="col-sm-6 col-md-3">
-                <div class="telemetry-metric-box">
-                  <div class="telemetry-label">Cloud Cost</div>
-                  <div id="telemetryCost" class="telemetry-value text-info">
+                <div class="telemetry-chip">
+                  <div class="telemetry-chip-label">Cloud Cost</div>
+                  <div id="telemetryCost" class="telemetry-chip-value text-info">
                     $0.0000
                   </div>
                 </div>
               </div>
 
-              <!-- Metric 4: Tokens Processed -->
+              <!-- Metric 4: Tokens -->
               <div class="col-sm-6 col-md-3">
-                <div class="telemetry-metric-box">
-                  <div class="telemetry-label">Token Footprint</div>
-                  <div id="telemetryTokens" class="telemetry-value text-light">
+                <div class="telemetry-chip">
+                  <div class="telemetry-chip-label">Token Footprint</div>
+                  <div id="telemetryTokens" class="telemetry-chip-value text-light">
                     0 tokens
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- Routing Reason Banner -->
-            <div class="mt-2 pt-2 border-top border-secondary small text-secondary">
-              <span class="fw-semibold text-light"><i class="bi bi-info-circle me-1"></i>Routing Decision:</span>
-              <span id="telemetryReason">Awaiting prompt invocation...</span>
+            <!-- Routing Reason Box -->
+            <div class="telemetry-reason-box mt-2">
+              <span class="fw-bold text-white me-1"><i class="bi bi-info-circle me-1"></i>Decision Reason:</span>
+              <span id="telemetryReason">Select a workflow or template to trigger hybrid inference.</span>
             </div>
           </div>
 
-          <!-- Tabs: Output vs Chat vs Saved Notes -->
-          <div class="card card-glass flex-grow-1 d-flex flex-column">
-            <div class="card-header bg-transparent border-bottom p-2">
-              <ul class="nav nav-pills card-header-pills" id="studioTabs" role="tablist">
+          <!-- Studio Tabs: Output vs Chat vs Notes -->
+          <div class="studio-card flex-grow-1 d-flex flex-column p-3">
+            <div class="d-flex align-items-center justify-content-between pb-2 mb-2 border-bottom">
+              <ul class="nav nav-pills custom-studio-tabs" id="studioTabs" role="tablist">
                 <li class="nav-item" role="presentation">
-                  <button class="nav-link active py-1 px-3 small" id="tabOutput-btn" data-bs-toggle="pill" data-bs-target="#tabOutput" type="button" role="tab">
-                    <i class="bi bi-file-text-fill me-1"></i> AI Output
+                  <button class="nav-link active" id="tabOutput-btn" data-bs-toggle="pill" data-bs-target="#tabOutput" type="button" role="tab">
+                    <i class="bi bi-file-text-fill me-1"></i> Document Intelligence
                   </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                  <button class="nav-link py-1 px-3 small" id="tabChat-btn" data-bs-toggle="pill" data-bs-target="#tabChat" type="button" role="tab">
-                    <i class="bi bi-chat-dots-fill me-1"></i> Document Chat
+                  <button class="nav-link" id="tabChat-btn" data-bs-toggle="pill" data-bs-target="#tabChat" type="button" role="tab">
+                    <i class="bi bi-chat-dots-fill me-1"></i> Interactive Chat
                   </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                  <button class="nav-link py-1 px-3 small" id="tabNotes-btn" data-bs-toggle="pill" data-bs-target="#tabNotes" type="button" role="tab">
+                  <button class="nav-link" id="tabNotes-btn" data-bs-toggle="pill" data-bs-target="#tabNotes" type="button" role="tab">
                     <i class="bi bi-cloud-check-fill me-1"></i> Firestore Sync
                   </button>
                 </li>
               </ul>
+
+              <button id="btnCopyOutput" class="btn btn-sm btn-action-outline py-1 px-2" title="Copy output to clipboard">
+                <i class="bi bi-clipboard me-1"></i> Copy
+              </button>
             </div>
 
-            <div class="card-body p-3 flex-grow-1 overflow-auto tab-content" id="studioTabsContent">
+            <div class="tab-content flex-grow-1 overflow-auto" id="studioTabsContent">
 
-              <!-- TAB 1: AI Output -->
+              <!-- TAB 1: Document Intelligence Output -->
               <div class="tab-pane fade show active h-100 d-flex flex-column" id="tabOutput" role="tabpanel">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                  <span class="small text-muted fw-bold text-uppercase">Structured Intelligence Response</span>
-                  <button id="btnCopyOutput" class="btn btn-sm btn-outline-secondary py-0 px-2" title="Copy to clipboard">
-                    <i class="bi bi-clipboard me-1"></i> Copy
-                  </button>
-                </div>
-
-                <!-- Loading Spinner State -->
+                <!-- Loading State -->
                 <div id="outputLoading" class="text-center my-auto py-5 d-none">
                   <div class="spinner-border text-primary mb-2" role="status"></div>
-                  <p class="text-muted small mb-0">Executing Hybrid Inference...</p>
+                  <div class="text-muted small fw-medium">Executing Hybrid Inference via Firebase AI Logic...</div>
                 </div>
 
-                <!-- Placeholder Empty State -->
-                <div id="outputPlaceholder" class="text-center my-auto py-5 text-muted">
-                  <i class="bi bi-stars fs-1 text-primary-subtle d-block mb-2"></i>
-                  <h6>No output generated yet</h6>
-                  <p class="small text-muted max-w-sm mx-auto">
-                    Choose a workflow button (e.g. <strong>Auto-Summarize</strong> or <strong>Redact PII</strong>) to execute prompts using on-device Gemini Nano or cloud fallback.
+                <!-- Empty State -->
+                <div id="outputPlaceholder" class="empty-state-card my-auto">
+                  <div class="empty-state-icon">
+                    <i class="bi bi-stars fs-3"></i>
+                  </div>
+                  <h6 class="fw-bold mb-1">Ready to analyze your document</h6>
+                  <p class="text-muted small mb-3" style="max-width: 360px; margin: 0 auto;">
+                    Select an action workflow on the left, or try one of these quick tasks:
                   </p>
+                  <div class="d-flex flex-wrap justify-content-center gap-2">
+                    <button class="quick-starter-pill" onclick="document.getElementById('btnSummarize').click()">
+                      <i class="bi bi-lightning-charge text-primary"></i> Run Executive Summary
+                    </button>
+                    <button class="quick-starter-pill" onclick="document.getElementById('btnRedact').click()">
+                      <i class="bi bi-shield-lock text-success"></i> Scrub Sensitive PII
+                    </button>
+                    <button class="quick-starter-pill" onclick="document.getElementById('btnActionItems').click()">
+                      <i class="bi bi-check2-square text-info"></i> Extract Action Items
+                    </button>
+                  </div>
                 </div>
 
-                <!-- Rendered Markdown Output -->
-                <div id="outputContent" class="formatted-output d-none small"></div>
+                <!-- Formatted Rendered Output -->
+                <div id="outputContent" class="formatted-output-body d-none p-2"></div>
               </div>
 
               <!-- TAB 2: Multi-Turn Document Chat -->
               <div class="tab-pane fade h-100 d-flex flex-column" id="tabChat" role="tabpanel">
-                <div id="chatMessagesContainer" class="chat-window flex-grow-1 p-3 mb-2">
+                <div id="chatMessagesContainer" class="chat-thread-container flex-grow-1 mb-2">
                   <div class="text-center text-muted small my-auto py-4">
                     <i class="bi bi-chat-text fs-3 text-secondary d-block mb-1"></i>
-                    Ask questions, verify facts, or request revisions based on the active document.
+                    Ask questions, verify facts, or request edits based on the active document.
                   </div>
                 </div>
 
                 <div class="input-group">
                   <input type="text" id="chatInput" class="form-control form-control-sm" placeholder="Ask a question about this document...">
-                  <button id="btnSendChat" class="btn btn-sm btn-primary">
+                  <button id="btnSendChat" class="btn btn-sm btn-action-primary px-3">
                     <i class="bi bi-send-fill"></i>
                   </button>
                 </div>
@@ -361,13 +374,13 @@
 
               <!-- TAB 3: Saved Notes & Firestore Sync -->
               <div class="tab-pane fade h-100 d-flex flex-column" id="tabNotes" role="tabpanel">
-                <div class="d-flex justify-content-between align-items-center mb-2">
+                <div class="d-flex justify-content-between align-items-center mb-2 px-1">
                   <span class="small text-muted fw-bold text-uppercase">Synchronized Knowledge Store</span>
-                  <span class="badge bg-success-subtle text-success border border-success">
+                  <span class="badge bg-success-subtle text-success border border-success rounded-pill px-2 py-1">
                     <i class="bi bi-cloud-check-fill me-1"></i> Firestore Active
                   </span>
                 </div>
-                <div id="savedNotesContainer" class="list-group list-group-flush border rounded-3 overflow-auto flex-grow-1" style="max-height: 420px;">
+                <div id="savedNotesContainer" class="list-group list-group-flush border rounded-3 overflow-auto flex-grow-1" style="max-height: 380px;">
                   <!-- Notes dynamically rendered here -->
                 </div>
               </div>
@@ -381,19 +394,144 @@
     </div>
   </main>
 
+  <!-- MODAL: System Functionality Test Suite (8/8) -->
+  <div class="modal fade" id="modalFunctionalityTest" tabindex="-1" aria-labelledby="modalFunctionalityTestLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content border-0 shadow-lg" style="border-radius: var(--radius-lg);">
+        <div class="modal-header bg-light border-bottom py-3">
+          <div class="d-flex align-items-center gap-2">
+            <div class="bg-success text-white rounded-circle p-1 d-inline-flex" style="width: 28px; height: 28px; align-items: center; justify-content: center;">
+              <i class="bi bi-patch-check-fill fs-6"></i>
+            </div>
+            <div>
+              <h6 class="modal-title fw-bold mb-0" id="modalFunctionalityTestLabel">OmniScribe System Acceptance Test Suite</h6>
+              <div class="text-muted small" style="font-size: 0.75rem;">Verified for Google #BuildHybridAI 2026 competition judging</div>
+            </div>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-3 p-md-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-muted small">Executes real on-device and cloud hybrid inference tests live in your browser:</span>
+            <span id="testScoreBadge" class="badge bg-secondary-subtle text-secondary border fs-6 px-3 py-2 rounded-pill">
+              0 / 8 Tested
+            </span>
+          </div>
+
+          <div class="list-group list-group-flush border rounded-3 mb-2" id="testListGroup">
+            <div class="list-group-item d-flex justify-content-between align-items-center py-2" id="testRow-1">
+              <div>
+                <strong class="small">1. Website loads correctly</strong>
+                <div class="text-muted" style="font-size: 0.78rem;" id="testDetail-1">Verifies DOM nodes, Bootstrap 5.3 assets, and pre-loaded scenarios.</div>
+              </div>
+              <span class="badge bg-secondary rounded-pill" id="testBadge-1"><i class="bi bi-circle me-1"></i> Pending</span>
+            </div>
+
+            <div class="list-group-item d-flex justify-content-between align-items-center py-2" id="testRow-2">
+              <div>
+                <strong class="small">2. Guest Mode works</strong>
+                <div class="text-muted" style="font-size: 0.78rem;" id="testDetail-2">Validates anonymous friction-free authentication & local session.</div>
+              </div>
+              <span class="badge bg-secondary rounded-pill" id="testBadge-2"><i class="bi bi-circle me-1"></i> Pending</span>
+            </div>
+
+            <div class="list-group-item d-flex justify-content-between align-items-center py-2" id="testRow-3">
+              <div>
+                <strong class="small">3. Auto-Summarize generates a summary</strong>
+                <div class="text-muted" style="font-size: 0.78rem;" id="testDetail-3">Runs on-device / hybrid summarization with Executive TL;DR output.</div>
+              </div>
+              <span class="badge bg-secondary rounded-pill" id="testBadge-3"><i class="bi bi-circle me-1"></i> Pending</span>
+            </div>
+
+            <div class="list-group-item d-flex justify-content-between align-items-center py-2" id="testRow-4">
+              <div>
+                <strong class="small">4. Redact PII removes sensitive information</strong>
+                <div class="text-muted" style="font-size: 0.78rem;" id="testDetail-4">Masks patient names, MRN, clinician IDs, and DOB with 100% zero data egress.</div>
+              </div>
+              <span class="badge bg-secondary rounded-pill" id="testBadge-4"><i class="bi bi-circle me-1"></i> Pending</span>
+            </div>
+
+            <div class="list-group-item d-flex justify-content-between align-items-center py-2" id="testRow-5">
+              <div>
+                <strong class="small">5. Action Items generates results</strong>
+                <div class="text-muted" style="font-size: 0.78rem;" id="testDetail-5">Extracts structured actionable priorities, owners, and deadlines.</div>
+              </div>
+              <span class="badge bg-secondary rounded-pill" id="testBadge-5"><i class="bi bi-circle me-1"></i> Pending</span>
+            </div>
+
+            <div class="list-group-item d-flex justify-content-between align-items-center py-2" id="testRow-6">
+              <div>
+                <strong class="small">6. Gemini cloud response works</strong>
+                <div class="text-muted" style="font-size: 0.78rem;" id="testDetail-6">Executes cloud boost route via Firebase AI Logic Gemini 2.5 Flash.</div>
+              </div>
+              <span class="badge bg-secondary rounded-pill" id="testBadge-6"><i class="bi bi-circle me-1"></i> Pending</span>
+            </div>
+
+            <div class="list-group-item d-flex justify-content-between align-items-center py-2" id="testRow-7">
+              <div>
+                <strong class="small">7. Firestore saves a document</strong>
+                <div class="text-muted" style="font-size: 0.78rem;" id="testDetail-7">Stores structured note in Firestore collection with local sync cache.</div>
+              </div>
+              <span class="badge bg-secondary rounded-pill" id="testBadge-7"><i class="bi bi-circle me-1"></i> Pending</span>
+            </div>
+
+            <div class="list-group-item d-flex justify-content-between align-items-center py-2" id="testRow-8">
+              <div>
+                <strong class="small">8. Saved document remains after refreshing</strong>
+                <div class="text-muted" style="font-size: 0.78rem;" id="testDetail-8">Retrieves persisted notes from cache and validates across browser sessions.</div>
+              </div>
+              <span class="badge bg-secondary rounded-pill" id="testBadge-8"><i class="bi bi-circle me-1"></i> Pending</span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer bg-light border-top py-2">
+          <button type="button" class="btn btn-sm btn-action-outline" data-bs-dismiss="modal">Close</button>
+          <button type="button" id="btnExecuteAllTests" class="btn btn-sm btn-success rounded-pill px-3 fw-semibold">
+            <i class="bi bi-play-circle-fill me-1"></i> Run 8-Point Verification
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Hardware & Gemini Nano Diagnostics -->
+  <div class="modal fade" id="modalDiagnostics" tabindex="-1" aria-labelledby="modalDiagnosticsLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content border-0 shadow-lg" style="border-radius: var(--radius-lg);">
+        <div class="modal-header bg-light border-bottom py-3">
+          <h5 class="modal-title fw-bold" id="modalDiagnosticsLabel">
+            <i class="bi bi-speedometer2 text-primary me-2"></i>Hardware & Gemini Nano Diagnostics
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4" id="diagResultsBody">
+          <p class="text-muted small mb-0">
+            Click <strong>Run Benchmark</strong> to probe your device's Prompt API availability, WebGPU acceleration, and measure comparative latency between On-Device Gemini Nano and Firebase Cloud inference.
+          </p>
+        </div>
+        <div class="modal-footer bg-light border-top py-2">
+          <button type="button" class="btn btn-sm btn-action-outline" data-bs-dismiss="modal">Close</button>
+          <button type="button" id="btnRunDiagBenchmark" class="btn btn-sm btn-action-primary rounded-pill px-3">
+            <i class="bi bi-play-circle-fill me-1"></i> Run Benchmark
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL: Firebase & App Check Configuration -->
   <div class="modal fade" id="modalFirebaseSettings" tabindex="-1" aria-labelledby="modalFirebaseSettingsLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="modalFirebaseSettingsLabel">
+      <div class="modal-content border-0 shadow-lg" style="border-radius: var(--radius-lg);">
+        <div class="modal-header bg-light border-bottom py-3">
+          <h5 class="modal-title fw-bold" id="modalFirebaseSettingsLabel">
             <i class="bi bi-sliders text-primary me-2"></i>Firebase AI Logic Configuration
           </h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body p-4">
           <p class="small text-muted mb-3">
-            OmniScribe includes complete local simulation and on-device Gemini Nano testing. To link your live Firebase Project for Cloud Gemini 2.5 Flash and Firestore sync, enter your project details below.
+            OmniScribe includes complete local simulation and on-device Gemini Nano testing. To link your live Firebase Project for Cloud Gemini 2.5 Flash and Firestore sync, enter your project details below. Keys are stored privately in your browser's <code>localStorage</code> and never committed to GitHub.
           </p>
 
           <form id="formFirebaseSettings">
@@ -421,7 +559,7 @@
             <div class="mb-2">
               <label class="form-label small fw-semibold">App Check Debug Token</label>
               <input type="text" id="inputAppCheckToken" class="form-control form-control-sm font-monospace" placeholder="App Check Debug Token for hackathon testing">
-              <div class="form-text small" style="font-size: 0.75rem;">Firebase AI Logic requires App Check. Debug tokens are accepted in hackathon submissions.</div>
+              <div class="form-text small" style="font-size: 0.72rem;">Firebase AI Logic requires App Check. Debug tokens are accepted in hackathon submissions.</div>
             </div>
 
             <div class="row g-2 mb-2">
@@ -436,136 +574,14 @@
               <div class="col-6">
                 <label class="form-label small fw-semibold">Max Local Tokens</label>
                 <input type="number" id="inputLocalThreshold" class="form-control form-control-sm" value="1500" min="200" max="8000">
-                <div class="form-text small" style="font-size: 0.75rem;">Payloads exceeding this switch to Cloud in Auto mode.</div>
+                <div class="form-text small" style="font-size: 0.72rem;">Payloads exceeding this switch to Cloud in Auto mode.</div>
               </div>
             </div>
           </form>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" id="btnSaveSettings" class="btn btn-sm btn-primary">Save & Apply</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: Diagnostics & Benchmark -->
-  <div class="modal fade" id="modalDiagnostics" tabindex="-1" aria-labelledby="modalDiagnosticsLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="modalDiagnosticsLabel">
-            <i class="bi bi-speedometer2 text-primary me-2"></i>Hardware & Gemini Nano Diagnostics
-          </h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body" id="diagResultsBody">
-          <p class="text-muted small">
-            Click <strong>Run Benchmark</strong> to probe your device's Prompt API availability, WebGPU acceleration, and measure comparative latency between On-Device Gemini Nano and Firebase Cloud inference.
-          </p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" id="btnRunDiagBenchmark" class="btn btn-sm btn-primary">
-            <i class="bi bi-play-circle-fill me-1"></i> Run Benchmark
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: OmniScribe Functionality Test (8/8) -->
-  <div class="modal fade" id="modalFunctionalityTest" tabindex="-1" aria-labelledby="modalFunctionalityTestLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content">
-        <div class="modal-header bg-light border-bottom">
-          <h5 class="modal-title" id="modalFunctionalityTestLabel">
-            <i class="bi bi-patch-check-fill text-success me-2"></i>OmniScribe Functionality Verification
-          </h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body p-3 p-md-4">
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <div>
-              <h6 class="fw-bold mb-1">OmniScribe System Test Suite</h6>
-              <span class="text-muted small">Validates hybrid inference, privacy redaction, auth, and persistence.</span>
-            </div>
-            <span id="testScoreBadge" class="badge bg-secondary-subtle text-secondary border fs-6 px-3 py-2">
-              0 / 8 Tested
-            </span>
-          </div>
-
-          <div class="list-group list-group-flush border rounded-3 mb-3" id="testListGroup">
-            <div class="list-group-item d-flex justify-content-between align-items-center" id="testRow-1">
-              <div>
-                <strong>1. Website loads correctly</strong>
-                <div class="small text-muted" id="testDetail-1">Verifies DOM nodes, Bootstrap 5.3 assets, and pre-loaded scenarios.</div>
-              </div>
-              <span class="badge bg-secondary" id="testBadge-1"><i class="bi bi-circle me-1"></i> Pending</span>
-            </div>
-
-            <div class="list-group-item d-flex justify-content-between align-items-center" id="testRow-2">
-              <div>
-                <strong>2. Guest Mode works</strong>
-                <div class="small text-muted" id="testDetail-2">Validates anonymous friction-free authentication & local session.</div>
-              </div>
-              <span class="badge bg-secondary" id="testBadge-2"><i class="bi bi-circle me-1"></i> Pending</span>
-            </div>
-
-            <div class="list-group-item d-flex justify-content-between align-items-center" id="testRow-3">
-              <div>
-                <strong>3. Auto-Summarize generates a summary</strong>
-                <div class="small text-muted" id="testDetail-3">Runs on-device / hybrid summarization with Executive TL;DR output.</div>
-              </div>
-              <span class="badge bg-secondary" id="testBadge-3"><i class="bi bi-circle me-1"></i> Pending</span>
-            </div>
-
-            <div class="list-group-item d-flex justify-content-between align-items-center" id="testRow-4">
-              <div>
-                <strong>4. Redact PII removes sensitive information</strong>
-                <div class="small text-muted" id="testDetail-4">Masks patient names, MRN, clinician IDs, and DOB with 100% zero data egress.</div>
-              </div>
-              <span class="badge bg-secondary" id="testBadge-4"><i class="bi bi-circle me-1"></i> Pending</span>
-            </div>
-
-            <div class="list-group-item d-flex justify-content-between align-items-center" id="testRow-5">
-              <div>
-                <strong>5. Action Items generates results</strong>
-                <div class="small text-muted" id="testDetail-5">Extracts structured actionable priorities, owners, and deadlines.</div>
-              </div>
-              <span class="badge bg-secondary" id="testBadge-5"><i class="bi bi-circle me-1"></i> Pending</span>
-            </div>
-
-            <div class="list-group-item d-flex justify-content-between align-items-center" id="testRow-6">
-              <div>
-                <strong>6. Gemini cloud response works</strong>
-                <div class="small text-muted" id="testDetail-6">Executes cloud boost route via Firebase AI Logic Gemini 2.5 Flash.</div>
-              </div>
-              <span class="badge bg-secondary" id="testBadge-6"><i class="bi bi-circle me-1"></i> Pending</span>
-            </div>
-
-            <div class="list-group-item d-flex justify-content-between align-items-center" id="testRow-7">
-              <div>
-                <strong>7. Firestore saves a document</strong>
-                <div class="small text-muted" id="testDetail-7">Stores structured note in Firestore collection with local sync cache.</div>
-              </div>
-              <span class="badge bg-secondary" id="testBadge-7"><i class="bi bi-circle me-1"></i> Pending</span>
-            </div>
-
-            <div class="list-group-item d-flex justify-content-between align-items-center" id="testRow-8">
-              <div>
-                <strong>8. Saved document remains after refreshing</strong>
-                <div class="small text-muted" id="testDetail-8">Retrieves persisted notes from cache and validates across browser sessions.</div>
-              </div>
-              <span class="badge bg-secondary" id="testBadge-8"><i class="bi bi-circle me-1"></i> Pending</span>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer bg-light border-top">
-          <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" id="btnExecuteAllTests" class="btn btn-sm btn-success">
-            <i class="bi bi-play-circle-fill me-1"></i> Run All 8 Tests
-          </button>
+        <div class="modal-footer bg-light border-top py-2">
+          <button type="button" class="btn btn-sm btn-action-outline" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" id="btnSaveSettings" class="btn btn-sm btn-action-primary rounded-pill px-3">Save & Apply</button>
         </div>
       </div>
     </div>
@@ -576,7 +592,7 @@
     <div id="appToast" class="toast align-items-center text-bg-dark border-0 shadow" role="alert" aria-live="assertive" aria-atomic="true">
       <div class="d-flex">
         <div class="toast-body small" id="toastBody">
-          Welcome to OmniScribe Hybrid AI!
+          Welcome to OmniScribe!
         </div>
         <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
       </div>
@@ -590,4 +606,3 @@
   <script type="module" src="assets/js/app.js"></script>
 </body>
 </html>
-
